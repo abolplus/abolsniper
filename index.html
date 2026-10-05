@@ -3,72 +3,1456 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#050505">
+
 <title>ABOL SNIPER</title>
+
 <style>
-:root{--bg:#050505;--green:#39ff14;--text:#f5f5f5;--muted:#858585;--border:rgba(57,255,20,.15)}
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html{width:100%;min-height:100%;scroll-behavior:smooth}
-body{width:100%;min-height:100vh;overflow:hidden;background:radial-gradient(circle at 50% -10%,rgba(57,255,20,.055),transparent 35%),var(--bg);color:var(--text);font-family:Tahoma,Arial,sans-serif}
-button{border:0;outline:0;font-family:inherit;cursor:pointer}
-#loader{position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#050505;transition:opacity .75s ease,visibility .75s ease}
-#loader.hide{opacity:0;visibility:hidden;pointer-events:none}
-.loader-logo{direction:ltr;display:flex;align-items:center;white-space:nowrap;font-size:37px;font-weight:900;letter-spacing:3px}
-.loader-logo .abol{display:inline-block;color:#fff;opacity:0;animation:loaderAbol .8s ease-out forwards}
-.loader-logo .sniper{display:inline-block;color:var(--green);opacity:0;transform:translateY(12px);text-shadow:0 0 14px rgba(57,255,20,.15);animation:loaderSniper .65s ease-out .25s forwards}
-@keyframes loaderAbol{0%{opacity:0}100%{opacity:1}}
-@keyframes loaderSniper{0%{opacity:0;transform:translateY(12px)}100%{opacity:1;transform:translateY(0)}}
-.top-bar{position:fixed;top:18px;left:50%;transform:translateX(-50%) translateY(-10px);z-index:1000;padding:9px 17px;border:1px solid var(--border);border-radius:999px;background:rgba(8,8,8,.72);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);box-shadow:0 0 25px rgba(57,255,20,.045),inset 0 0 15px rgba(255,255,255,.015);opacity:0;animation:topBarIn .7s cubic-bezier(.2,.8,.2,1) 2.15s forwards}
-@keyframes topBarIn{from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-.top-logo{direction:ltr;display:flex;align-items:center;white-space:nowrap;color:#fff;font-size:13px;font-weight:900;letter-spacing:1.8px}
-.top-logo .abol,.top-logo .sniper{color:#fff}
-.center{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;padding:20px}
-.center-logo{direction:ltr;display:flex;align-items:center;white-space:nowrap;font-size:42px;font-weight:900;letter-spacing:3px;user-select:none;opacity:0;animation:centerAppear .9s ease-out 1.15s forwards,softFloat 6.5s ease-in-out 2s infinite}
-.center-logo .abol{color:#fff;text-shadow:0 0 12px rgba(255,255,255,.07)}
-.center-logo .sniper{color:var(--green);text-shadow:0 0 12px rgba(57,255,20,.16),0 0 28px rgba(57,255,20,.07)}
-@keyframes centerAppear{from{opacity:0;transform:translateY(5px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}
-@keyframes softFloat{0%{transform:translateY(-7px)}50%{transform:translateY(7px)}100%{transform:translateY(-7px)}}
-#snow-container{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:5}
-.snow{position:absolute;top:-20px;width:4px;height:4px;border-radius:50%;background:#39ff14;box-shadow:0 0 8px rgba(57,255,20,.65);opacity:0;animation:snowFall 5s linear forwards}
-@keyframes snowFall{0%{transform:translate3d(0,-20px,0);opacity:0}10%{opacity:.65}80%{opacity:.45}100%{transform:translate3d(35px,110vh,0);opacity:0}}
-.bottom-nav{position:fixed;left:50%;bottom:18px;transform:translateX(-50%) translateY(12px);z-index:2000;width:min(315px,calc(100% - 90px));padding:7px 5px;display:grid;grid-template-columns:1fr 1fr 1fr;border:1px solid var(--border);border-radius:18px;background:rgba(10,10,10,.78);backdrop-filter:blur(15px);-webkit-backdrop-filter:blur(15px);box-shadow:0 12px 35px rgba(0,0,0,.55),0 0 22px rgba(57,255,20,.035);opacity:0;animation:bottomBarIn .7s cubic-bezier(.2,.8,.2,1) 2.2s forwards}
-@keyframes bottomBarIn{from{opacity:0;transform:translateX(-50%) translateY(12px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
-.nav-button{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px 6px;border-radius:14px;background:transparent;color:var(--muted);font-size:10px;font-weight:800;transition:color .25s ease,background .25s ease,transform .2s ease}
-.nav-symbol{color:currentColor;font-size:14px;line-height:1;transition:transform .25s ease}
-.nav-button.active{color:var(--green);background:rgba(57,255,20,.07);box-shadow:inset 0 0 12px rgba(57,255,20,.025)}
-.nav-button:hover{color:var(--green)}
-.nav-button:active{transform:scale(.94)}
-.nav-button:active .nav-symbol{transform:scale(.88)}
-.ripple{position:absolute;width:10px;height:10px;border-radius:50%;background:rgba(57,255,20,.24);transform:translate(-50%,-50%) scale(0);pointer-events:none;animation:ripple .65s ease-out forwards}
-@keyframes ripple{0%{opacity:.7;transform:translate(-50%,-50%) scale(0)}100%{opacity:0;transform:translate(-50%,-50%) scale(16)}}
-@media(max-width:380px){.loader-logo{font-size:32px;letter-spacing:2px}.center-logo{font-size:32px;letter-spacing:2px}.top-logo{font-size:12px}.bottom-nav{width:calc(100% - 70px)}}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#000;
+    color:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* REMOVE MOBILE BLUE TAP HIGHLIGHT */
+
+button,
+a,
+.nav-item{
+    -webkit-tap-highlight-color:transparent;
+    outline:none;
+}
+
+/* LOADER */
+
+.loader{
+    position:fixed;
+    inset:0;
+    background:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:99999;
+    animation:loaderHide 1s ease 2.2s forwards;
+}
+
+.loader span{
+    color:#39ff14;
+    font-size:30px;
+    font-weight:900;
+    letter-spacing:4px;
+    text-shadow:
+        0 0 8px #39ff14,
+        0 0 20px rgba(57,255,20,.8);
+    animation:loaderPulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes loaderPulse{
+    from{
+        opacity:.45;
+        transform:scale(.96);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@keyframes loaderHide{
+    to{
+        opacity:0;
+        visibility:hidden;
+        pointer-events:none;
+    }
+}
+
+/* SNOW */
+
+.snow{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:1;
+}
+
+.snowflake{
+    position:absolute;
+    top:-10px;
+
+    width:3px;
+    height:3px;
+
+    border-radius:50%;
+
+    background:#39ff14;
+
+    box-shadow:
+        0 0 5px #39ff14,
+        0 0 10px rgba(57,255,20,.6);
+
+    opacity:.5;
+
+    animation:fall 8s linear forwards;
+}
+
+@keyframes fall{
+    0%{
+        transform:translateY(-20px);
+        opacity:0;
+    }
+
+    10%{
+        opacity:.5;
+    }
+
+    90%{
+        opacity:.5;
+    }
+
+    100%{
+        transform:translateY(110vh);
+        opacity:0;
+    }
+}
+
+/* TOP TITLE */
+
+.top-title{
+    position:fixed;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:100;
+
+    padding:10px 22px;
+
+    border:1px solid rgba(57,255,20,.3);
+    border-radius:999px;
+
+    background:rgba(5,5,5,.78);
+    backdrop-filter:blur(12px);
+
+    color:#fff;
+
+    font-size:14px;
+    font-weight:900;
+    letter-spacing:2px;
+
+    white-space:nowrap;
+    overflow:hidden;
+}
+
+.top-title::after{
+    content:"";
+
+    position:absolute;
+    top:0;
+    bottom:0;
+
+    width:65px;
+    left:-70px;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(57,255,20,.8),
+        transparent
+    );
+
+    filter:blur(4px);
+
+    animation:titleGlow 8s ease-in-out infinite;
+}
+
+@keyframes titleGlow{
+    0%{
+        left:-70px;
+    }
+
+    50%{
+        left:110%;
+    }
+
+    100%{
+        left:110%;
+    }
+}
+
+/* TOP BUTTONS */
+
+.info-button,
+.bots-button{
+    position:fixed;
+    top:22px;
+    z-index:101;
+
+    width:58px;
+    height:34px;
+
+    border:1px solid rgba(57,255,20,.35);
+    border-radius:999px;
+
+    background:rgba(5,5,5,.78);
+    backdrop-filter:blur(12px);
+
+    color:#39ff14;
+
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1px;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+}
+
+.info-button{
+    left:calc(50% - 155px);
+}
+
+.bots-button{
+    left:calc(50% + 82px);
+}
+
+.info-button:hover,
+.bots-button:hover{
+    border-color:#39ff14;
+
+    box-shadow:
+        0 0 10px rgba(57,255,20,.3),
+        inset 0 0 10px rgba(57,255,20,.08);
+}
+
+/* MAIN */
+
+main{
+    position:relative;
+    z-index:2;
+
+    min-height:100vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:120px 20px 130px;
+}
+
+.main-content{
+    animation:mainFloat 3.5s ease-in-out infinite;
+}
+
+.main-name{
+    position:relative;
+
+    color:#fff;
+
+    font-size:38px;
+    font-weight:900;
+
+    letter-spacing:5px;
+
+    text-align:center;
+
+    text-shadow:
+        0 0 6px rgba(255,255,255,.25),
+        0 0 18px rgba(57,255,20,.35);
+
+    animation:mainGlow 3s ease-in-out infinite alternate;
+}
+
+.main-name span:last-child{
+    color:#39ff14;
+
+    text-shadow:
+        0 0 7px #39ff14,
+        0 0 18px rgba(57,255,20,.5);
+}
+
+@keyframes mainFloat{
+    0%,
+    100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-12px);
+    }
+}
+
+@keyframes mainGlow{
+    from{
+        text-shadow:
+            0 0 5px rgba(255,255,255,.2),
+            0 0 14px rgba(57,255,20,.25);
+    }
+
+    to{
+        text-shadow:
+            0 0 8px rgba(255,255,255,.3),
+            0 0 23px rgba(57,255,20,.55);
+    }
+}
+
+/* OVERLAYS */
+
+.overlay{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.88);
+
+    backdrop-filter:blur(12px);
+
+    z-index:1000;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:30px 20px 120px;
+
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+
+    transition:.3s ease;
+}
+
+.overlay.active{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+}
+
+.overlay-content{
+    width:min(460px,100%);
+    max-height:75vh;
+
+    overflow-y:auto;
+
+    position:relative;
+
+    padding:28px 16px 20px;
+}
+
+.overlay-title{
+    text-align:center;
+
+    color:#fff;
+
+    font-size:22px;
+    font-weight:900;
+
+    margin-bottom:25px;
+}
+
+.overlay-title span{
+    color:#39ff14;
+}
+
+/* CLOSE BUTTON */
+
+.close-button{
+    position:absolute;
+
+    top:0;
+    right:0;
+
+    width:38px;
+    height:38px;
+
+    border:1px solid rgba(57,255,20,.35);
+    border-radius:50%;
+
+    background:#050505;
+
+    color:#39ff14;
+
+    font-size:22px;
+    line-height:36px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+    z-index:5;
+}
+
+.close-button:hover{
+    border-color:#39ff14;
+
+    box-shadow:
+        0 0 14px rgba(57,255,20,.3);
+
+    transform:rotate(90deg);
+}
+
+/* CARDS */
+
+.bot-card,
+.info-card{
+    position:relative;
+
+    margin-bottom:14px;
+    padding:18px;
+
+    border:1px solid rgba(57,255,20,.2);
+    border-radius:18px;
+
+    background:linear-gradient(
+        145deg,
+        rgba(20,20,20,.92),
+        rgba(5,5,5,.94)
+    );
+
+    box-shadow:
+        inset 0 0 20px rgba(57,255,20,.025),
+        0 5px 20px rgba(0,0,0,.3);
+
+    opacity:0;
+    transform:translateY(55px);
+}
+
+.overlay.active .bot-card,
+.overlay.active .info-card{
+    animation:
+        cardIn .65s cubic-bezier(.2,.8,.2,1)
+        forwards;
+}
+
+.overlay.active .bot-card:nth-child(2),
+.overlay.active .info-card:nth-child(2){
+    animation-delay:.08s;
+}
+
+.overlay.active .bot-card:nth-child(3),
+.overlay.active .info-card:nth-child(3){
+    animation-delay:.16s;
+}
+
+.overlay.active .bot-card:nth-child(4),
+.overlay.active .info-card:nth-child(4){
+    animation-delay:.24s;
+}
+
+@keyframes cardIn{
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.bot-card:last-child,
+.info-card:last-child{
+    margin-bottom:0;
+}
+
+/* BOT TITLE */
+
+.bot-name{
+    color:#39ff14;
+
+    font-size:14px;
+    font-weight:900;
+
+    margin-bottom:9px;
+
+    text-align:right;
+}
+
+/* BOT DESCRIPTION */
+
+.bot-desc,
+.info-desc{
+    color:#aaa;
+
+    font-size:13px;
+    line-height:1.9;
+}
+
+/* BOT FOOTER */
+
+.bot-footer{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    direction:ltr;
+
+    margin-top:13px;
+}
+
+.bot-id{
+    color:#777;
+
+    font-size:11px;
+    font-weight:700;
+
+    direction:ltr;
+
+    text-decoration:none;
+
+    transition:.25s ease;
+}
+
+.bot-id:hover{
+    color:#39ff14;
+}
+
+/* BOT OPEN BUTTON */
+
+.bot-open{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:48px;
+    height:48px;
+
+    border-radius:14px;
+
+    border:1px solid rgba(57,255,20,.3);
+
+    background:rgba(57,255,20,.035);
+
+    color:#39ff14;
+
+    text-decoration:none;
+
+    font-size:19px;
+
+    transition:.25s ease;
+}
+
+.bot-open:hover{
+    border-color:#39ff14;
+
+    background:rgba(57,255,20,.08);
+
+    box-shadow:
+        0 0 12px rgba(57,255,20,.18),
+        inset 0 0 10px rgba(57,255,20,.07);
+
+    transform:translateY(-2px);
+}
+
+/* INFO */
+
+.info-card{
+    text-align:right;
+}
+
+.info-card-title{
+    color:#39ff14;
+
+    font-size:14px;
+    font-weight:900;
+
+    margin-bottom:8px;
+}
+
+/* SUPPORT GROUP */
+
+.support-group{
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:6px;
+
+    margin-top:14px;
+    padding:9px 15px;
+
+    border:1px solid rgba(57,255,20,.3);
+    border-radius:999px;
+
+    background:rgba(57,255,20,.04);
+
+    color:#39ff14;
+
+    text-decoration:none;
+
+    font-size:12px;
+    font-weight:800;
+
+    direction:ltr;
+
+    transition:.25s ease;
+}
+
+.support-group:hover{
+    border-color:#39ff14;
+
+    box-shadow:
+        0 0 12px rgba(57,255,20,.15);
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+    position:fixed;
+
+    left:50%;
+    bottom:18px;
+
+    transform:translateX(-50%);
+
+    width:min(390px,calc(100% - 28px));
+    height:68px;
+
+    border:1px solid rgba(57,255,20,.25);
+    border-radius:19px;
+
+    background:rgba(8,8,8,.88);
+
+    backdrop-filter:blur(16px);
+
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+
+    z-index:9000;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.5),
+        inset 0 0 18px rgba(57,255,20,.025);
+
+    animation:bottomBarIn .7s ease 2.4s both;
+
+    overflow:visible;
+}
+
+@keyframes bottomBarIn{
+    from{
+        opacity:0;
+        transform:translate(-50%,30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translate(-50%,0);
+    }
+}
+
+/* MOVING NEON LIGHT */
+
+.bottom-nav::after{
+    content:"";
+
+    position:absolute;
+
+    width:58px;
+    height:2px;
+
+    border-radius:999px;
+
+    background:linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(57,255,20,.2) 18%,
+        #39ff14 42%,
+        #fff 50%,
+        #39ff14 58%,
+        rgba(57,255,20,.2) 82%,
+        transparent 100%
+    );
+
+    box-shadow:
+        0 0 5px #39ff14,
+        0 0 10px rgba(57,255,20,.9),
+        0 0 18px rgba(57,255,20,.55);
+
+    pointer-events:none;
+
+    offset-path:inset(0 round 19px);
+    offset-anchor:50% 50%;
+    offset-distance:0%;
+
+    animation:bottomNavNeon 8s linear infinite;
+}
+
+@keyframes bottomNavNeon{
+    0%{
+        offset-distance:0%;
+        opacity:1;
+    }
+
+    11%{
+        offset-distance:100%;
+        opacity:1;
+    }
+
+    12.5%{
+        offset-distance:100%;
+        opacity:0;
+    }
+
+    100%{
+        offset-distance:100%;
+        opacity:0;
+    }
+}
+
+/* NAV ITEMS */
+
+.nav-item{
+    position:relative;
+
+    width:33.333%;
+    height:100%;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:5px;
+
+    color:#666;
+
+    font-size:10px;
+
+    cursor:pointer;
+    user-select:none;
+
+    transition:.25s ease;
+}
+
+.nav-icon{
+    font-size:18px;
+    line-height:1;
+}
+
+.nav-item.active{
+    color:#39ff14;
+
+    text-shadow:
+        0 0 8px rgba(57,255,20,.35);
+}
+
+.nav-item.active::after{
+    content:"";
+
+    position:absolute;
+
+    bottom:7px;
+
+    width:22px;
+    height:2px;
+
+    border-radius:999px;
+
+    background:#39ff14;
+
+    box-shadow:
+        0 0 7px #39ff14,
+        0 0 14px rgba(57,255,20,.6);
+
+    animation:activeLine .3s ease;
+}
+
+@keyframes activeLine{
+    from{
+        width:0;
+        opacity:0;
+    }
+
+    to{
+        width:22px;
+        opacity:1;
+    }
+}
+
+/* RIPPLE */
+
+.ripple{
+    position:absolute;
+
+    width:8px;
+    height:8px;
+
+    border-radius:50%;
+
+    background:rgba(57,255,20,.35);
+
+    transform:translate(-50%,-50%);
+
+    pointer-events:none;
+
+    animation:ripple .55s ease-out forwards;
+}
+
+@keyframes ripple{
+    from{
+        width:8px;
+        height:8px;
+        opacity:.7;
+    }
+
+    to{
+        width:100px;
+        height:100px;
+        opacity:0;
+    }
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .top-title{
+        top:20px;
+
+        font-size:12px;
+
+        padding:9px 18px;
+    }
+
+    .info-button{
+        left:calc(50% - 135px);
+    }
+
+    .bots-button{
+        left:calc(50% + 72px);
+    }
+
+    .info-button,
+    .bots-button{
+        width:54px;
+        height:32px;
+
+        top:22px;
+
+        font-size:9px;
+    }
+
+    .main-name{
+        font-size:31px;
+    }
+
+    .overlay{
+        padding-left:14px;
+        padding-right:14px;
+    }
+
+    .overlay-content{
+        width:100%;
+    }
+
+    .close-button{
+        right:0;
+    }
+
+    .bottom-nav{
+        width:calc(100% - 24px);
+        bottom:14px;
+    }
+}
 </style>
 </head>
+
 <body>
-<div id="loader"><div class="loader-logo"><span class="abol">ABOL</span><span class="sniper">&nbsp;SNIPER</span></div></div>
-<div id="snow-container"></div>
-<header class="top-bar"><div class="top-logo"><span class="abol">ABOL</span><span class="sniper">&nbsp;SNIPER</span></div></header>
-<main class="center"><div class="center-logo"><span class="abol">ABOL</span><span class="sniper">&nbsp;SNIPER</span></div></main>
+<!-- LOADER -->
+
+<div class="loader">
+    <span>ABOL SNIPER</span>
+</div>
+
+
+<!-- SNOW -->
+
+<div class="snow" id="snow"></div>
+
+
+<!-- TOP -->
+
+<div class="top-title">
+    ABOL SNIPER
+</div>
+
+<button class="info-button" id="infoBtn">
+    INFO
+</button>
+
+<button class="bots-button" id="botsBtn">
+    BOTS
+</button>
+
+
+<!-- MAIN -->
+
+<main id="home">
+
+    <div class="main-content">
+
+        <div class="main-name">
+            <span>ABOL</span> <span>SNIPER</span>
+        </div>
+
+    </div>
+
+</main>
+
+
+<!-- BOTS OVERLAY -->
+
+<div class="overlay" id="botsOverlay">
+
+    <div class="overlay-content">
+
+        <button class="close-button" id="closeBots">
+            ×
+        </button>
+
+        <div class="overlay-title">
+            <span>ربات</span> های ما
+        </div>
+
+
+        <div class="bot-card">
+
+            <div class="bot-name">
+                FREE FIRE LIKES
+            </div>
+
+            <div class="bot-desc">
+                کاملاً رایگان برای حسابت لایک بزن
+            </div>
+
+            <div class="bot-footer">
+
+                <a
+                    class="bot-id"
+                    href="https://t.me/iranfreefirebot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    @iranfreefirebot
+                </a>
+
+                <a
+                    class="bot-open"
+                    href="https://t.me/iranfreefirebot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    ↗
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="bot-card">
+
+            <div class="bot-name">
+                BOT MAKER
+            </div>
+
+            <div class="bot-desc">
+                کاملاً رایگان ربات بساز
+            </div>
+
+            <div class="bot-footer">
+
+                <a
+                    class="bot-id"
+                    href="https://t.me/PersiaCreatorBot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    @PersiaCreatorBot
+                </a>
+
+                <a
+                    class="bot-open"
+                    href="https://t.me/PersiaCreatorBot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    ↗
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <div class="bot-card">
+
+            <div class="bot-name">
+                PREMIUM EMOJI
+            </div>
+
+            <div class="bot-desc">
+                برای کانالت پرمیوم بخر و ایموجی بزار
+            </div>
+
+            <div class="bot-footer">
+
+                <a
+                    class="bot-id"
+                    href="https://t.me/PremiumFreeEmojiBot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    @PremiumFreeEmojiBot
+                </a>
+
+                <a
+                    class="bot-open"
+                    href="https://t.me/PremiumFreeEmojiBot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    ↗
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- INFO OVERLAY -->
+
+<div class="overlay" id="infoOverlay">
+
+    <div class="overlay-content">
+
+        <button class="close-button" id="closeInfo">
+            ×
+        </button>
+
+        <div class="overlay-title">
+            <span>درباره</span> ما
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-card-title">
+                خدمات بازی و مجازی
+            </div>
+
+            <div class="info-desc">
+                ارائه خدمات بازی و مجازی با کیفیت و سرعت بالا
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-card-title">
+                خدمات متنوع
+            </div>
+
+            <div class="info-desc">
+                خدمات متنوع تلگرام و برنامه‌های دیگر
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-card-title">
+                کیفیت و اطمینان
+            </div>
+
+            <div class="info-desc">
+                خدمات به‌روز، مطمئن و در دسترس
+            </div>
+
+        </div>
+
+
+        <div class="info-card">
+
+            <div class="info-card-title">
+                گروه پشتیبانی ما
+            </div>
+
+            <div class="info-desc">
+                برای ارتباط، دریافت راهنمایی و پیگیری خدمات
+            </div>
+
+            <a
+                class="support-group"
+                href="https://t.me/ffunion"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                ⌁ @ffunion ↗
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- BOTTOM NAV -->
+
 <nav class="bottom-nav">
-<button class="nav-button" onclick="support(this)"><span class="nav-symbol">⌁</span><span>پشتیبانی</span></button>
-<button class="nav-button active" onclick="goHome(this)"><span class="nav-symbol">⌂</span><span>خانه</span></button>
-<button class="nav-button" onclick="channel(this)"><span class="nav-symbol">◉</span><span>کانال</span></button>
+
+    <div class="nav-item" data-action="support">
+
+        <div class="nav-icon">
+            ◌
+        </div>
+
+        <div>
+            پشتیبانی
+        </div>
+
+    </div>
+
+
+    <div class="nav-item active" data-action="home">
+
+        <div class="nav-icon">
+            ⌂
+        </div>
+
+        <div>
+            خانه
+        </div>
+
+    </div>
+
+
+    <div class="nav-item" data-action="channel">
+
+        <div class="nav-icon">
+            ◈
+        </div>
+
+        <div>
+            کانال
+        </div>
+
+    </div>
+
 </nav>
+
+
+<!-- JAVASCRIPT -->
+
 <script>
-const SUPPORT="abolplus";
-const CHANNEL="abolsniper";
-function telegram(id){id=id.replace("@","").trim();return "https://t.me/"+id}
-window.addEventListener("load",()=>{setTimeout(()=>{document.getElementById("loader").classList.add("hide")},2100)});
-const snowContainer=document.getElementById("snow-container");
-function createSnow(){const snow=document.createElement("span");snow.className="snow";snow.style.left=Math.random()*100+"%";const size=Math.random()*3+2;snow.style.width=size+"px";snow.style.height=size+"px";snow.style.animationDuration=(Math.random()*2+4)+"s";snow.style.filter=`blur(${Math.random()*.4}px)`;snowContainer.appendChild(snow);setTimeout(()=>{snow.remove()},7000)}
-function randomSnow(){createSnow();const nextTime=Math.random()*3500+5000;setTimeout(randomSnow,nextTime)}
-setTimeout(randomSnow,4500);
-function addRipple(button){const ripple=document.createElement("span");ripple.className="ripple";ripple.style.left="50%";ripple.style.top="50%";button.appendChild(ripple);setTimeout(()=>{ripple.remove()},700)}
-function setActive(button){document.querySelectorAll(".nav-button").forEach(item=>{item.classList.remove("active")});button.classList.add("active");addRipple(button)}
-function support(button){setActive(button);window.location.href=telegram(SUPPORT)}
-function channel(button){setActive(button);window.location.href=telegram(CHANNEL)}
-function goHome(button){setActive(button);window.scrollTo({top:0,behavior:"smooth"})}
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    /* =========================
+       SNOW SYSTEM
+    ========================= */
+
+    const snowContainer =
+        document.getElementById("snow");
+
+
+    function createSnow(){
+
+        const snowflake =
+            document.createElement("span");
+
+        snowflake.className =
+            "snowflake";
+
+
+        /* Random horizontal position */
+
+        snowflake.style.left =
+            Math.random() * 100 + "%";
+
+
+        /* Slight random size */
+
+        const size =
+            2 + Math.random() * 2;
+
+        snowflake.style.width =
+            size + "px";
+
+        snowflake.style.height =
+            size + "px";
+
+
+        /* Slight random opacity */
+
+        snowflake.style.opacity =
+            0.35 + Math.random() * 0.25;
+
+
+        /* Slight random fall speed */
+
+        snowflake.style.animationDuration =
+            (7 + Math.random() * 3) + "s";
+
+
+        snowContainer.appendChild(
+            snowflake
+        );
+
+
+        /* Remove after animation */
+
+        setTimeout(function(){
+
+            snowflake.remove();
+
+        }, 11000);
+
+    }
+
+
+    /* First snow */
+
+    setTimeout(function(){
+
+        createSnow();
+
+    }, 800);
+
+
+    /* One snow every 3.5 seconds */
+
+    setInterval(function(){
+
+        createSnow();
+
+    }, 3500);
+
+
+    /* =========================
+       ELEMENTS
+    ========================= */
+
+    const infoBtn =
+        document.getElementById("infoBtn");
+
+    const botsBtn =
+        document.getElementById("botsBtn");
+
+    const infoOverlay =
+        document.getElementById("infoOverlay");
+
+    const botsOverlay =
+        document.getElementById("botsOverlay");
+
+    const closeInfo =
+        document.getElementById("closeInfo");
+
+    const closeBots =
+        document.getElementById("closeBots");
+
+
+    /* =========================
+       OPEN INFO
+    ========================= */
+
+    infoBtn.addEventListener("click", function(){
+
+        infoOverlay.classList.add("active");
+
+    });
+
+
+    /* =========================
+       OPEN BOTS
+    ========================= */
+
+    botsBtn.addEventListener("click", function(){
+
+        botsOverlay.classList.add("active");
+
+    });
+
+
+    /* =========================
+       CLOSE INFO
+    ========================= */
+
+    closeInfo.addEventListener("click", function(){
+
+        infoOverlay.classList.remove("active");
+
+    });
+
+
+    /* =========================
+       CLOSE BOTS
+    ========================= */
+
+    closeBots.addEventListener("click", function(){
+
+        botsOverlay.classList.remove("active");
+
+    });
+
+
+    /* =========================
+       CLOSE WITH BACKGROUND
+    ========================= */
+
+    infoOverlay.addEventListener("click", function(e){
+
+        if(e.target === infoOverlay){
+
+            infoOverlay.classList.remove("active");
+
+        }
+
+    });
+
+
+    botsOverlay.addEventListener("click", function(e){
+
+        if(e.target === botsOverlay){
+
+            botsOverlay.classList.remove("active");
+
+        }
+
+    });
+
+
+    /* =========================
+       ESCAPE
+    ========================= */
+
+    document.addEventListener("keydown", function(e){
+
+        if(e.key === "Escape"){
+
+            infoOverlay.classList.remove("active");
+
+            botsOverlay.classList.remove("active");
+
+        }
+
+    });
+
+
+    /* =========================
+       BOTTOM NAV
+    ========================= */
+
+    const navItems =
+        document.querySelectorAll(".nav-item");
+
+
+    navItems.forEach(function(item){
+
+        item.addEventListener("click", function(e){
+
+            navItems.forEach(function(nav){
+
+                nav.classList.remove("active");
+
+            });
+
+
+            this.classList.add("active");
+
+
+            /* RIPPLE */
+
+            const ripple =
+                document.createElement("span");
+
+            ripple.className =
+                "ripple";
+
+
+            const rect =
+                this.getBoundingClientRect();
+
+
+            ripple.style.left =
+                (e.clientX - rect.left) + "px";
+
+
+            ripple.style.top =
+                (e.clientY - rect.top) + "px";
+
+
+            this.appendChild(ripple);
+
+
+            setTimeout(function(){
+
+                ripple.remove();
+
+            }, 600);
+
+
+            /* ACTIONS */
+
+            const action =
+                this.dataset.action;
+
+
+            if(action === "home"){
+
+                window.scrollTo({
+
+                    top:0,
+
+                    behavior:"smooth"
+
+                });
+
+            }
+
+
+            if(action === "support"){
+
+                window.location.href =
+                    "https://t.me/abolplus";
+
+            }
+
+
+            if(action === "channel"){
+
+                window.location.href =
+                    "https://t.me/abolsniper";
+
+            }
+
+        });
+
+    });
+
+});
+
 </script>
+
 </body>
 </html>
