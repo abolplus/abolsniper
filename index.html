@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ABOL SNIPER</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,sans-serif;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    background:#000;
+    color:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* REMOVE MOBILE BLUE TAP HIGHLIGHT */
+
+button,
+a,
+.nav-item{
+    -webkit-tap-highlight-color:transparent;
+    outline:none;
+}
+
+/* LOADER */
+
+.loader{
+    position:fixed;
+    inset:0;
+    background:#000;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:99999;
+    animation:loaderHide 1s ease 2.2s forwards;
+}
+
+.loader span{
+    color:#39ff14;
+    font-size:30px;
+    font-weight:900;
+    letter-spacing:4px;
+    text-shadow:
+        0 0 8px #39ff14,
+        0 0 20px rgba(57,255,20,.8);
+    animation:loaderPulse 1s ease-in-out infinite alternate;
+}
+
+@keyframes loaderPulse{
+    from{
+        opacity:.45;
+        transform:scale(.96);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+
+@keyframes loaderHide{
+    to{
+        opacity:0;
+        visibility:hidden;
+        pointer-events:none;
+    }
+}
+
+/* SNOW */
+
+.snow{
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:1;
+}
+
+.snowflake{
+    position:absolute;
+    top:-10px;
+
+    width:3px;
+    height:3px;
+
+    border-radius:50%;
+
+    background:#39ff14;
+
+    box-shadow:
+        0 0 5px #39ff14,
+        0 0 10px rgba(57,255,20,.6);
+
+    opacity:.5;
+
+    animation:fall 8s linear forwards;
+}
+
+@keyframes fall{
+    0%{
+        transform:translateY(-20px);
+        opacity:0;
+    }
+
+    10%{
+        opacity:.5;
+    }
+
+    90%{
+        opacity:.5;
+    }
+
+    100%{
+        transform:translateY(110vh);
+        opacity:0;
+    }
+}
+
+/* TOP TITLE */
+
+.top-title{
+    position:fixed;
+    top:20px;
+    left:50%;
+    transform:translateX(-50%);
+    z-index:100;
+
+    padding:10px 22px;
+
+    border:1px solid rgba(57,255,20,.3);
+    border-radius:999px;
+
+    background:rgba(5,5,5,.78);
+    backdrop-filter:blur(12px);
+
+    color:#fff;
+
+    font-size:14px;
+    font-weight:900;
+    letter-spacing:2px;
+
+    white-space:nowrap;
+    overflow:hidden;
+}
+
+.top-title::after{
+    content:"";
+
+    position:absolute;
+    top:0;
+    bottom:0;
+
+    width:65px;
+    left:-70px;
+
+    background:linear-gradient(
+        90deg,
+        transparent,
+        rgba(57,255,20,.8),
+        transparent
+    );
+
+    filter:blur(4px);
+
+    animation:titleGlow 8s ease-in-out infinite;
+}
+
+@keyframes titleGlow{
+    0%{
+        left:-70px;
+    }
+
+    50%{
+        left:110%;
+    }
+
+    100%{
+        left:110%;
+    }
+}
+
+/* TOP BUTTONS */
+
+.info-button,
+.bots-button{
+    position:fixed;
+    top:22px;
+    z-index:101;
+
+    width:58px;
+    height:34px;
+
+    border:1px solid rgba(57,255,20,.35);
+    border-radius:999px;
+
+    background:rgba(5,5,5,.78);
+    backdrop-filter:blur(12px);
+
+    color:#39ff14;
+
+    font-size:10px;
+    font-weight:900;
+    letter-spacing:1px;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+}
+
+.info-button{
+    left:calc(50% - 140px);
+}
+
+.bots-button{
+    left:calc(50% + 82px);
+}
+
+.info-button:hover,
+.bots-button:hover{
+    border-color:#39ff14;
+
+    box-shadow:
+        0 0 10px rgba(57,255,20,.3),
+        inset 0 0 10px rgba(57,255,20,.08);
+}
+
+/* MAIN */
+
+main{
+    position:relative;
+    z-index:2;
+
+    min-height:100vh;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:120px 20px 130px;
+}
+
+.main-content{
+    animation:mainFloat 3.5s ease-in-out infinite;
+}
+
+.main-name{
+    position:relative;
+
+    color:#fff;
+
+    font-size:38px;
+    font-weight:900;
+
+    letter-spacing:5px;
+
+    text-align:center;
+
+    text-shadow:
+        0 0 6px rgba(255,255,255,.25),
+        0 0 18px rgba(57,255,20,.35);
+
+    animation:mainGlow 3s ease-in-out infinite alternate;
+}
+
+.main-name span:last-child{
+    color:#39ff14;
+
+    text-shadow:
+        0 0 7px #39ff14,
+        0 0 18px rgba(57,255,20,.5);
+}
+
+@keyframes mainFloat{
+    0%,
+    100%{
+        transform:translateY(0);
+    }
+
+    50%{
+        transform:translateY(-12px);
+    }
+}
+
+@keyframes mainGlow{
+    from{
+        text-shadow:
+            0 0 5px rgba(255,255,255,.2),
+            0 0 14px rgba(57,255,20,.25);
+    }
+
+    to{
+        text-shadow:
+            0 0 8px rgba(255,255,255,.3),
+            0 0 23px rgba(57,255,20,.55);
+    }
+}
+
+/* OVERLAYS */
+
+.overlay{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,.88);
+
+    backdrop-filter:blur(12px);
+
+    z-index:1000;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:30px 20px 120px;
+
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+
+    transition:.3s ease;
+}
+
+.overlay.active{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+}
+
+.overlay-content{
+    width:min(460px,100%);
+    max-height:75vh;
+
+    overflow-y:auto;
+
+    position:relative;
+
+    padding:28px 16px 20px;
+}
+
+.overlay-title{
+    text-align:center;
+
+    color:#fff;
+
+    font-size:22px;
+    font-weight:900;
+
+    margin-bottom:25px;
+}
+
+.overlay-title span{
+    color:#39ff14;
+}
+
+/* CLOSE BUTTON */
+
+.close-button{
+    position:absolute;
+
+    top:0;
+    right:0;
+
+    width:38px;
+    height:38px;
+
+    border:1px solid rgba(57,255,20,.35);
+    border-radius:50%;
+
+    background:#050505;
+
+    color:#39ff14;
+
+    font-size:22px;
+    line-height:36px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    transition:.25s ease;
+
+    z-index:5;
+}
+
+.close-button:hover{
+    border-color:#39ff14;
+
+    box-shadow:
+        0 0 14px rgba(57,255,20,.3);
+
+    transform:rotate(90deg);
+}
+
+/* CARDS */
+
+.bot-card,
+.info-card{
+    position:relative;
+
+    margin-bottom:14px;
+    padding:18px;
+
+    border:1px solid rgba(57,255,20,.2);
+    border-radius:18px;
+
+    background:linear-gradient(
+        145deg,
+        rgba(20,20,20,.92),
+        rgba(5,5,5,.94)
+    );
+
+    box-shadow:
+        inset 0 0 20px rgba(57,255,20,.025),
+        0 5px 20px rgba(0,0,0,.3);
+
+    opacity:0;
+    transform:translateY(55px);
+}
+
+.overlay.active .bot-card,
+.overlay.active .info-card{
+    animation:
+        cardIn .65s cubic-bezier(.2,.8,.2,1)
+        forwards;
+}
+
+.overlay.active .bot-card:nth-child(2),
+.overlay.active .info-card:nth-child(2){
+    animation-delay:.08s;
+}
+
+.overlay.active .bot-card:nth-child(3),
+.overlay.active .info-card:nth-child(3){
+    animation-delay:.16s;
+}
+
+.overlay.active .bot-card:nth-child(4),
+.overlay.active .info-card:nth-child(4){
+    animation-delay:.24s;
+}
+
+@keyframes cardIn{
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.bot-card:last-child,
+.info-card:last-child{
+    margin-bottom:0;
+}
+
+/* BOT TITLE */
+
+.bot-name{
+    color:#39ff14;
+
+    font-size:14px;
+    font-weight:900;
+
+    margin-bottom:9px;
+
+    text-align:right;
+}
+
+/* BOT DESCRIPTION */
+
+.bot-desc,
+.info-desc{
+    color:#aaa;
+
+    font-size:13px;
+    line-height:1.9;
+}
+
+/* BOT FOOTER */
+
+.bot-footer{
+    display:flex;
+
+    align-items:center;
+    justify-content:space-between;
+
+    direction:ltr;
+
+    margin-top:13px;
+}
+
+.bot-id{
+    color:#777;
+
+    font-size:11px;
+    font-weight:700;
+
+    direction:ltr;
+
+    text-decoration:none;
+
+    transition:.25s ease;
+}
+
+.bot-id:hover{
+    color:#39ff14;
+}
+
+/* BOT OPEN BUTTON */
+
+.bot-open{
+    display:flex;
+
+    align-items:center;
+    justify-content:center;
+
+    width:48px;
+    height:48px;
+
+    border-radius:14px;
+
+    border:1px solid rgba(57,255,20,.3);
+
+    background:rgba(57,255,20,.035);
+
+    color:#39ff14;
+
+    text-decoration:none;
+
+    font-size:19px;
+
+    transition:.25s ease;
+}
+
+.bot-open:hover{
+    border-color:#39ff14;
+
+    background:rgba(57,255,20,.08);
+
+    box-shadow:
+        0 0 12px rgba(57,255,20,.18),
+        inset 0 0 10px rgba(57,255,20,.07);
+
+    transform:translateY(-2px);
+}
+
+/* INFO */
+
+.info-card{
+    text-align:right;
+}
+
+.info-card-title{
+    color:#39ff14;
+
+    font-size:14px;
+    font-weight:900;
+
+    margin-bottom:8px;
+}
+
+/* SUPPORT GROUP */
+
+.support-group{
+    display:inline-flex;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:6px;
+
+    margin-top:14px;
+    padding:9px 15px;
+
+    border:1px solid rgba(57,255,20,.3);
+    border-radius:999px;
+
+    background:rgba(57,255,20,.04);
+
+    color:#39ff14;
+
+    text-decoration:none;
+
+    font-size:12px;
+    font-weight:800;
+
+    direction:ltr;
+
+    transition:.25s ease;
+}
+
+.support-group:hover{
+    border-color:#39ff14;
+
+    box-shadow:
+        0 0 12px rgba(57,255,20,.15);
+}
+
+/* BOTTOM NAV */
+
+.bottom-nav{
+    position:fixed;
+
+    left:50%;
+    bottom:18px;
+
+    transform:translateX(-50%);
+
+    width:min(390px,calc(100% - 28px));
+    height:68px;
+
+    border:1px solid rgba(57,255,20,.25);
+    border-radius:19px;
+
+    background:rgba(8,8,8,.88);
+
+    backdrop-filter:blur(16px);
+
+    display:flex;
+    align-items:center;
+    justify-content:space-around;
+
+    z-index:9000;
+
+    box-shadow:
+        0 10px 35px rgba(0,0,0,.5),
+        inset 0 0 18px rgba(57,255,20,.025);
+
+    animation:bottomBarIn .7s ease 2.4s both;
+
+    overflow:visible;
+}
+
+@keyframes bottomBarIn{
+    from{
+        opacity:0;
+        transform:translate(-50%,30px);
+    }
+
+    to{
+        opacity:1;
+        transform:translate(-50%,0);
+    }
+}
+
+/* MOVING NEON LIGHT */
+
+.bottom-nav::after{
+    content:"";
+
+    position:absolute;
+
+    width:58px;
+    height:2px;
+
+    border-radius:999px;
+
+    background:linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(57,255,20,.2) 18%,
+        #39ff14 42%,
+        #fff 50%,
+        #39ff14 58%,
+        rgba(57,255,20,.2) 82%,
+        transparent 100%
+    );
+
+    box-shadow:
+        0 0 5px #39ff14,
+        0 0 10px rgba(57,255,20,.9),
+        0 0 18px rgba(57,255,20,.55);
+
+    pointer-events:none;
+
+    offset-path:inset(0 round 19px);
+    offset-anchor:50% 50%;
+    offset-distance:0%;
+
+    animation:bottomNavNeon 8s linear infinite;
+}
+
+@keyframes bottomNavNeon{
+    0%{
+        offset-distance:0%;
+        opacity:1;
+    }
+
+    11%{
+        offset-distance:100%;
+        opacity:1;
+    }
+
+    12.5%{
+        offset-distance:100%;
+        opacity:0;
+    }
+
+    100%{
+        offset-distance:100%;
+        opacity:0;
+    }
+}
+
+/* NAV ITEMS */
+
+.nav-item{
+    position:relative;
+
+    width:33.333%;
+    height:100%;
+
+    display:flex;
+    flex-direction:column;
+
+    align-items:center;
+    justify-content:center;
+
+    gap:5px;
+
+    color:#666;
+
+    font-size:10px;
+
+    cursor:pointer;
+    user-select:none;
+
+    transition:.25s ease;
+}
+
+.nav-icon{
+    font-size:18px;
+    line-height:1;
+}
+
+.nav-item.active{
+    color:#39ff14;
+
+    text-shadow:
+        0 0 8px rgba(57,255,20,.35);
+}
+
+.nav-item.active::after{
+    content:"";
+
+    position:absolute;
+
+    bottom:7px;
+
+    width:22px;
+    height:2px;
+
+    border-radius:999px;
+
+    background:#39ff14;
+
+    box-shadow:
+        0 0 7px #39ff14,
+        0 0 14px rgba(57,255,20,.6);
+
+    animation:activeLine .3s ease;
+}
+
+@keyframes activeLine{
+    from{
+        width:0;
+        opacity:0;
+    }
+
+    to{
+        width:22px;
+        opacity:1;
+    }
+}
+
+/* RIPPLE */
+
+.ripple{
+    position:absolute;
+
+    width:8px;
+    height:8px;
+
+    border-radius:50%;
+
+    background:rgba(57,255,20,.35);
+
+    transform:translate(-50%,-50%);
+
+    pointer-events:none;
+
+    animation:ripple .55s ease-out forwards;
+}
+
+@keyframes ripple{
+    from{
+        width:8px;
+        height:8px;
+        opacity:.7;
+    }
+
+    to{
+        width:100px;
+        height:100px;
+        opacity:0;
+    }
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .top-title{
+        top:20px;
+
+        font-size:12px;
+
+        padding:9px 18px;
+    }
+
+    .info-button{
+        left:calc(50% - 126px);
+    }
+
+    .bots-button{
+        left:calc(50% + 72px);
+    }
+
+    .info-button,
+    .bots-button{
+        width:54px;
+        height:32px;
+
+        top:22px;
+
+        font-size:9px;
+    }
+
+    .main-name{
+        font-size:31px;
+    }
+
+    .overlay{
+        padding-left:14px;
+        padding-right:14px;
+    }
+
+    .overlay-content{
+        width:100%;
+    }
+
+    .close-button{
+        right:0;
+    }
+
+    .bottom-nav{
+        width:calc(100% - 24px);
+        bottom:14px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOADER -->
+
+<div class="loader">
+    <span>ABOL SNIPER</span>
+</div>
+
+<!-- SNOW -->
+
+<div class="snow" id="snow"></div>
+
+<!-- TOP -->
+
+<div class="top-title">
+    ABOL SNIPER
+</div>
+
+<button class="info-button" id="infoBtn">
+    INFO
+</button>
+
+<button class="bots-button" id="botsBtn">
+    BOTS
+</button>
+
+<!-- MAIN -->
+
+<main id="home">
+
+    <div class="main-content">
+
+        <div class="main-name">
+            <span>ABOL</span> <span>SNIPER</span>
+        </div>
+
+    </div>
+
+</main>
+
+<!-- BOTS OVERLAY -->
+
+<div class="overlay" id="botsOverlay">
+
+    <div class="overlay-content">
+
+        <button class="close-button" id="closeBots">
+            ×
+        </button>
+
+        <div class="overlay-title">
+            <span>ربات</span> های ما
+        </div>
+
+        <div class="bot-card">
+
+            <div class="bot-name">
+                FREE FIRE LIKES
+            </div>
+
+            <div class="bot-desc">
+                کاملاً رایگان برای حسابت لایک بزن
+            </div>
+
+            <div class="bot-footer">
+
+                <a
+                    class="bot-id"
+                    href="https://t.me/iranfreefirebot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    @iranfreefirebot
+                </a>
+
+                <a
+                    class="bot-open"
+                    href="https://t.me/iranfreefirebot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    ↗
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="bot-card">
+
+            <div class="bot-name">
+                BOT MAKER
+            </div>
+
+            <div class="bot-desc">
+                کاملاً رایگان ربات بساز
+            </div>
+
+            <div class="bot-footer">
+
+                <a
+                    class="bot-id"
+                    href="https://t.me/PersiaCreatorBot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    @PersiaCreatorBot
+                </a>
+
+                <a
+                    class="bot-open"
+                    href="https://t.me/PersiaCreatorBot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    ↗
+                </a>
+
+            </div>
+
+        </div>
+
+        <div class="bot-card">
+
+            <div class="bot-name">
+                PREMIUM EMOJI
+            </div>
+
+            <div class="bot-desc">
+                برای کانالت پرمیوم بخر و ایموجی بزار
+            </div>
+
+            <div class="bot-footer">
+
+                <a
+                    class="bot-id"
+                    href="https://t.me/PremiumFreeEmojiBot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    @PremiumFreeEmojiBot
+                </a>
+
+                <a
+                    class="bot-open"
+                    href="https://t.me/PremiumFreeEmojiBot"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    ↗
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- INFO OVERLAY -->
+
+<div class="overlay" id="infoOverlay">
+
+    <div class="overlay-content">
+
+        <button class="close-button" id="closeInfo">
+            ×
+        </button>
+
+        <div class="overlay-title">
+            <span>درباره</span> ما
+        </div>
+
+        <div class="info-card">
+
+            <div class="info-card-title">
+                خدمات بازی و مجازی
+            </div>
+
+            <div class="info-desc">
+                ارائه خدمات بازی و مجازی با کیفیت و سرعت بالا
+            </div>
+
+        </div>
+
+        <div class="info-card">
+
+            <div class="info-card-title">
+                خدمات متنوع
+            </div>
+
+            <div class="info-desc">
+                خدمات متنوع تلگرام و برنامه‌های دیگر
+            </div>
+
+        </div>
+
+        <div class="info-card">
+
+            <div class="info-card-title">
+                کیفیت و اطمینان
+            </div>
+
+            <div class="info-desc">
+                خدمات به‌روز، مطمئن و در دسترس
+            </div>
+
+        </div>
+
+        <div class="info-card">
+
+            <div class="info-card-title">
+                گروه پشتیبانی ما
+            </div>
+
+            <div class="info-desc">
+                برای ارتباط، دریافت راهنمایی و پیگیری خدمات
+            </div>
+
+            <a
+                class="support-group"
+                href="https://t.me/ffunion"
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                ⌁ @ffunion ↗
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+    <div class="nav-item" data-action="support">
+
+        <div class="nav-icon">
+            ◌
+        </div>
+
+        <div>
+            پشتیبانی
+        </div>
+
+    </div>
+
+    <div class="nav-item active" data-action="home">
+
+        <div class="nav-icon">
+            ⌂
+        </div>
+
+        <div>
+            خانه
+        </div>
+
+    </div>
+
+    <div class="nav-item" data-action="channel">
+
+        <div class="nav-icon">
+            ◈
+        </div>
+
+        <div>
+            کانال
+        </div>
+
+    </div>
+
+</nav>
+<!-- JAVASCRIPT -->
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+    /* =========================
+       SNOW SYSTEM
+    ========================= */
+
+    const snowContainer =
+        document.getElementById("snow");
+
+
+    function createSnow(){
+
+        const snowflake =
+            document.createElement("span");
+
+        snowflake.className =
+            "snowflake";
+
+
+        /* Random horizontal position */
+
+        snowflake.style.left =
+            Math.random() * 100 + "%";
+
+
+        /* Slight random size */
+
+        const size =
+            2 + Math.random() * 2;
+
+        snowflake.style.width =
+            size + "px";
+
+        snowflake.style.height =
+            size + "px";
+
+
+        /* Slight random opacity */
+
+        snowflake.style.opacity =
+            0.35 + Math.random() * 0.25;
+
+
+        /* Slight random fall speed */
+
+        snowflake.style.animationDuration =
+            (7 + Math.random() * 3) + "s";
+
+
+        snowContainer.appendChild(
+            snowflake
+        );
+
+
+        /* Remove after animation */
+
+        setTimeout(function(){
+
+            snowflake.remove();
+
+        }, 11000);
+
+    }
+
+
+    /* First snow */
+
+    setTimeout(function(){
+
+        createSnow();
+
+    }, 800);
+
+
+    /* One snow every 3.5 seconds */
+
+    setInterval(function(){
+
+        createSnow();
+
+    }, 3500);
+
+
+    /* =========================
+       ELEMENTS
+    ========================= */
+
+    const infoBtn =
+        document.getElementById("infoBtn");
+
+    const botsBtn =
+        document.getElementById("botsBtn");
+
+    const infoOverlay =
+        document.getElementById("infoOverlay");
+
+    const botsOverlay =
+        document.getElementById("botsOverlay");
+
+    const closeInfo =
+        document.getElementById("closeInfo");
+
+    const closeBots =
+        document.getElementById("closeBots");
+
+
+    /* =========================
+       OPEN INFO
+    ========================= */
+
+    infoBtn.addEventListener("click", function(){
+
+        infoOverlay.classList.add("active");
+
+    });
+
+
+    /* =========================
+       OPEN BOTS
+    ========================= */
+
+    botsBtn.addEventListener("click", function(){
+
+        botsOverlay.classList.add("active");
+
+    });
+
+
+    /* =========================
+       CLOSE INFO
+    ========================= */
+
+    closeInfo.addEventListener("click", function(){
+
+        infoOverlay.classList.remove("active");
+
+    });
+
+
+    /* =========================
+       CLOSE BOTS
+    ========================= */
+
+    closeBots.addEventListener("click", function(){
+
+        botsOverlay.classList.remove("active");
+
+    });
+
+
+    /* =========================
+       CLOSE WITH BACKGROUND
+    ========================= */
+
+    infoOverlay.addEventListener("click", function(e){
+
+        if(e.target === infoOverlay){
+
+            infoOverlay.classList.remove("active");
+
+        }
+
+    });
+
+
+    botsOverlay.addEventListener("click", function(e){
+
+        if(e.target === botsOverlay){
+
+            botsOverlay.classList.remove("active");
+
+        }
+
+    });
+
+
+    /* =========================
+       ESCAPE
+    ========================= */
+
+    document.addEventListener("keydown", function(e){
+
+        if(e.key === "Escape"){
+
+            infoOverlay.classList.remove("active");
+
+            botsOverlay.classList.remove("active");
+
+        }
+
+    });
+
+
+    /* =========================
+       BOTTOM NAV
+    ========================= */
+
+    const navItems =
+        document.querySelectorAll(".nav-item");
+
+
+    navItems.forEach(function(item){
+
+        item.addEventListener("click", function(e){
+
+            navItems.forEach(function(nav){
+
+                nav.classList.remove("active");
+
+            });
+
+
+            this.classList.add("active");
+
+
+            /* RIPPLE */
+
+            const ripple =
+                document.createElement("span");
+
+            ripple.className =
+                "ripple";
+
+
+            const rect =
+                this.getBoundingClientRect();
+
+
+            ripple.style.left =
+                (e.clientX - rect.left) + "px";
+
+
+            ripple.style.top =
+                (e.clientY - rect.top) + "px";
+
+
+            this.appendChild(ripple);
+
+
+            setTimeout(function(){
+
+                ripple.remove();
+
+            }, 600);
+
+
+            /* ACTIONS */
+
+            const action =
+                this.dataset.action;
+
+
+            if(action === "home"){
+
+                window.scrollTo({
+
+                    top:0,
+
+                    behavior:"smooth"
+
+                });
+
+            }
+
+
+            if(action === "support"){
+
+                window.open(
+                    "https://t.me/abolplus",
+                    "_blank"
+                );
+
+                setTimeout(function(){
+
+                    navItems.forEach(function(nav){
+
+                        nav.classList.remove("active");
+
+                    });
+
+                    document
+                        .querySelector('[data-action="home"]')
+                        .classList.add("active");
+
+                }, 500);
+
+            }
+
+
+            if(action === "channel"){
+
+                window.open(
+                    "https://t.me/abolsniper",
+                    "_blank"
+                );
+
+                setTimeout(function(){
+
+                    navItems.forEach(function(nav){
+
+                        nav.classList.remove("active");
+
+                    });
+
+                    document
+                        .querySelector('[data-action="home"]')
+                        .classList.add("active");
+
+                }, 500);
+
+            }
+
+        });
+
+    });
+
+});
+
+</script>
+
+</body>
+</html>
