@@ -2,1473 +2,273 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>ABOL SNIPER</title>
-
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:Arial,sans-serif;
-}
-
-html{
-    scroll-behavior:smooth;
-}
-
-body{
-    background:#000;
-    color:#fff;
-    min-height:100vh;
-    overflow-x:hidden;
-}
-
-/* REMOVE MOBILE BLUE TAP HIGHLIGHT */
-
-button,
-a,
-.nav-item{
-    -webkit-tap-highlight-color:transparent;
-    outline:none;
-}
-
-/* LOADER */
-
-.loader{
-    position:fixed;
-    inset:0;
-    background:#000;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:99999;
-    animation:loaderHide 1s ease 2.2s forwards;
-}
-
-.loader span{
-    color:#39ff14;
-    font-size:30px;
-    font-weight:900;
-    letter-spacing:4px;
-    text-shadow:
-        0 0 8px #39ff14,
-        0 0 20px rgba(57,255,20,.8);
-    animation:loaderPulse 1s ease-in-out infinite alternate;
-}
-
-@keyframes loaderPulse{
-    from{
-        opacity:.45;
-        transform:scale(.96);
-    }
-    to{
-        opacity:1;
-        transform:scale(1);
-    }
-}
-
-@keyframes loaderHide{
-    to{
-        opacity:0;
-        visibility:hidden;
-        pointer-events:none;
-    }
-}
-
-/* SNOW */
-
-.snow{
-    position:fixed;
-    inset:0;
-    pointer-events:none;
-    overflow:hidden;
-    z-index:1;
-}
-
-.snowflake{
-    position:absolute;
-    top:-10px;
-
-    width:3px;
-    height:3px;
-
-    border-radius:50%;
-
-    background:#39ff14;
-
-    box-shadow:
-        0 0 5px #39ff14,
-        0 0 10px rgba(57,255,20,.6);
-
-    opacity:.5;
-
-    animation:fall 8s linear forwards;
-}
-
-@keyframes fall{
-    0%{
-        transform:translateY(-20px);
-        opacity:0;
-    }
-
-    10%{
-        opacity:.5;
-    }
-
-    90%{
-        opacity:.5;
-    }
-
-    100%{
-        transform:translateY(110vh);
-        opacity:0;
-    }
-}
-
-/* TOP TITLE */
-
-.top-title{
-    position:fixed;
-    top:20px;
-    left:50%;
-    transform:translateX(-50%);
-    z-index:100;
-
-    padding:10px 22px;
-
-    border:1px solid rgba(57,255,20,.3);
-    border-radius:999px;
-
-    background:rgba(5,5,5,.78);
-    backdrop-filter:blur(12px);
-
-    color:#fff;
-
-    font-size:14px;
-    font-weight:900;
-    letter-spacing:2px;
-
-    white-space:nowrap;
-    overflow:hidden;
-}
-
-.top-title::after{
-    content:"";
-
-    position:absolute;
-    top:0;
-    bottom:0;
-
-    width:65px;
-    left:-70px;
-
-    background:linear-gradient(
-        90deg,
-        transparent,
-        rgba(57,255,20,.8),
-        transparent
-    );
-
-    filter:blur(4px);
-
-    animation:titleGlow 8s ease-in-out infinite;
-}
-
-@keyframes titleGlow{
-    0%{
-        left:-70px;
-    }
-
-    50%{
-        left:110%;
-    }
-
-    100%{
-        left:110%;
-    }
-}
-
-/* TOP BUTTONS */
-
-.info-button,
-.bots-button{
-    position:fixed;
-    top:22px;
-    z-index:101;
-
-    width:58px;
-    height:34px;
-
-    border:1px solid rgba(57,255,20,.35);
-    border-radius:999px;
-
-    background:rgba(5,5,5,.78);
-    backdrop-filter:blur(12px);
-
-    color:#39ff14;
-
-    font-size:10px;
-    font-weight:900;
-    letter-spacing:1px;
-
-    cursor:pointer;
-
-    transition:.25s ease;
-}
-
-.info-button{
-    left:calc(50% - 140px);
-}
-
-.bots-button{
-    left:calc(50% + 82px);
-}
-
-.info-button:hover,
-.bots-button:hover{
-    border-color:#39ff14;
-
-    box-shadow:
-        0 0 10px rgba(57,255,20,.3),
-        inset 0 0 10px rgba(57,255,20,.08);
-}
-
-/* MAIN */
-
-main{
-    position:relative;
-    z-index:2;
-
-    min-height:100vh;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    padding:120px 20px 130px;
-}
-
-.main-content{
-    animation:mainFloat 3.5s ease-in-out infinite;
-}
-
-.main-name{
-    position:relative;
-
-    color:#fff;
-
-    font-size:38px;
-    font-weight:900;
-
-    letter-spacing:5px;
-
-    text-align:center;
-
-    text-shadow:
-        0 0 6px rgba(255,255,255,.25),
-        0 0 18px rgba(57,255,20,.35);
-
-    animation:mainGlow 3s ease-in-out infinite alternate;
-}
-
-.main-name span:last-child{
-    color:#39ff14;
-
-    text-shadow:
-        0 0 7px #39ff14,
-        0 0 18px rgba(57,255,20,.5);
-}
-
-@keyframes mainFloat{
-    0%,
-    100%{
-        transform:translateY(0);
-    }
-
-    50%{
-        transform:translateY(-12px);
-    }
-}
-
-@keyframes mainGlow{
-    from{
-        text-shadow:
-            0 0 5px rgba(255,255,255,.2),
-            0 0 14px rgba(57,255,20,.25);
-    }
-
-    to{
-        text-shadow:
-            0 0 8px rgba(255,255,255,.3),
-            0 0 23px rgba(57,255,20,.55);
-    }
-}
-
-/* OVERLAYS */
-
-.overlay{
-    position:fixed;
-    inset:0;
-
-    background:rgba(0,0,0,.88);
-
-    backdrop-filter:blur(12px);
-
-    z-index:1000;
-
-    display:flex;
-    align-items:center;
-    justify-content:center;
-
-    padding:30px 20px 120px;
-
-    opacity:0;
-    visibility:hidden;
-    pointer-events:none;
-
-    transition:.3s ease;
-}
-
-.overlay.active{
-    opacity:1;
-    visibility:visible;
-    pointer-events:auto;
-}
-
-.overlay-content{
-    width:min(460px,100%);
-    max-height:75vh;
-
-    overflow-y:auto;
-
-    position:relative;
-
-    padding:28px 16px 20px;
-}
-
-.overlay-title{
-    text-align:center;
-
-    color:#fff;
-
-    font-size:22px;
-    font-weight:900;
-
-    margin-bottom:25px;
-}
-
-.overlay-title span{
-    color:#39ff14;
-}
-
-/* CLOSE BUTTON */
-
-.close-button{
-    position:absolute;
-
-    top:0;
-    right:0;
-
-    width:38px;
-    height:38px;
-
-    border:1px solid rgba(57,255,20,.35);
-    border-radius:50%;
-
-    background:#050505;
-
-    color:#39ff14;
-
-    font-size:22px;
-    line-height:36px;
-
-    text-align:center;
-
-    cursor:pointer;
-
-    transition:.25s ease;
-
-    z-index:5;
-}
-
-.close-button:hover{
-    border-color:#39ff14;
-
-    box-shadow:
-        0 0 14px rgba(57,255,20,.3);
-
-    transform:rotate(90deg);
-}
-
-/* CARDS */
-
-.bot-card,
-.info-card{
-    position:relative;
-
-    margin-bottom:14px;
-    padding:18px;
-
-    border:1px solid rgba(57,255,20,.2);
-    border-radius:18px;
-
-    background:linear-gradient(
-        145deg,
-        rgba(20,20,20,.92),
-        rgba(5,5,5,.94)
-    );
-
-    box-shadow:
-        inset 0 0 20px rgba(57,255,20,.025),
-        0 5px 20px rgba(0,0,0,.3);
-
-    opacity:0;
-    transform:translateY(55px);
-}
-
-.overlay.active .bot-card,
-.overlay.active .info-card{
-    animation:
-        cardIn .65s cubic-bezier(.2,.8,.2,1)
-        forwards;
-}
-
-.overlay.active .bot-card:nth-child(2),
-.overlay.active .info-card:nth-child(2){
-    animation-delay:.08s;
-}
-
-.overlay.active .bot-card:nth-child(3),
-.overlay.active .info-card:nth-child(3){
-    animation-delay:.16s;
-}
-
-.overlay.active .bot-card:nth-child(4),
-.overlay.active .info-card:nth-child(4){
-    animation-delay:.24s;
-}
-
-@keyframes cardIn{
-    to{
-        opacity:1;
-        transform:translateY(0);
-    }
-}
-
-.bot-card:last-child,
-.info-card:last-child{
-    margin-bottom:0;
-}
-
-/* BOT TITLE */
-
-.bot-name{
-    color:#39ff14;
-
-    font-size:14px;
-    font-weight:900;
-
-    margin-bottom:9px;
-
-    text-align:right;
-}
-
-/* BOT DESCRIPTION */
-
-.bot-desc,
-.info-desc{
-    color:#aaa;
-
-    font-size:13px;
-    line-height:1.9;
-}
-
-/* BOT FOOTER */
-
-.bot-footer{
-    display:flex;
-
-    align-items:center;
-    justify-content:space-between;
-
-    direction:ltr;
-
-    margin-top:13px;
-}
-
-.bot-id{
-    color:#777;
-
-    font-size:11px;
-    font-weight:700;
-
-    direction:ltr;
-
-    text-decoration:none;
-
-    transition:.25s ease;
-}
-
-.bot-id:hover{
-    color:#39ff14;
-}
-
-/* BOT OPEN BUTTON */
-
-.bot-open{
-    display:flex;
-
-    align-items:center;
-    justify-content:center;
-
-    width:48px;
-    height:48px;
-
-    border-radius:14px;
-
-    border:1px solid rgba(57,255,20,.3);
-
-    background:rgba(57,255,20,.035);
-
-    color:#39ff14;
-
-    text-decoration:none;
-
-    font-size:19px;
-
-    transition:.25s ease;
-}
-
-.bot-open:hover{
-    border-color:#39ff14;
-
-    background:rgba(57,255,20,.08);
-
-    box-shadow:
-        0 0 12px rgba(57,255,20,.18),
-        inset 0 0 10px rgba(57,255,20,.07);
-
-    transform:translateY(-2px);
-}
-
-/* INFO */
-
-.info-card{
-    text-align:right;
-}
-
-.info-card-title{
-    color:#39ff14;
-
-    font-size:14px;
-    font-weight:900;
-
-    margin-bottom:8px;
-}
-
-/* SUPPORT GROUP */
-
-.support-group{
-    display:inline-flex;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:6px;
-
-    margin-top:14px;
-    padding:9px 15px;
-
-    border:1px solid rgba(57,255,20,.3);
-    border-radius:999px;
-
-    background:rgba(57,255,20,.04);
-
-    color:#39ff14;
-
-    text-decoration:none;
-
-    font-size:12px;
-    font-weight:800;
-
-    direction:ltr;
-
-    transition:.25s ease;
-}
-
-.support-group:hover{
-    border-color:#39ff14;
-
-    box-shadow:
-        0 0 12px rgba(57,255,20,.15);
-}
-
-/* BOTTOM NAV */
-
-.bottom-nav{
-    position:fixed;
-
-    left:50%;
-    bottom:18px;
-
-    transform:translateX(-50%);
-
-    width:min(390px,calc(100% - 28px));
-    height:68px;
-
-    border:1px solid rgba(57,255,20,.25);
-    border-radius:19px;
-
-    background:rgba(8,8,8,.88);
-
-    backdrop-filter:blur(16px);
-
-    display:flex;
-    align-items:center;
-    justify-content:space-around;
-
-    z-index:9000;
-
-    box-shadow:
-        0 10px 35px rgba(0,0,0,.5),
-        inset 0 0 18px rgba(57,255,20,.025);
-
-    animation:bottomBarIn .7s ease 2.4s both;
-
-    overflow:visible;
-}
-
-@keyframes bottomBarIn{
-    from{
-        opacity:0;
-        transform:translate(-50%,30px);
-    }
-
-    to{
-        opacity:1;
-        transform:translate(-50%,0);
-    }
-}
-
-/* MOVING NEON LIGHT */
-
-.bottom-nav::after{
-    content:"";
-
-    position:absolute;
-
-    width:58px;
-    height:2px;
-
-    border-radius:999px;
-
-    background:linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(57,255,20,.2) 18%,
-        #39ff14 42%,
-        #fff 50%,
-        #39ff14 58%,
-        rgba(57,255,20,.2) 82%,
-        transparent 100%
-    );
-
-    box-shadow:
-        0 0 5px #39ff14,
-        0 0 10px rgba(57,255,20,.9),
-        0 0 18px rgba(57,255,20,.55);
-
-    pointer-events:none;
-
-    offset-path:inset(0 round 19px);
-    offset-anchor:50% 50%;
-    offset-distance:0%;
-
-    animation:bottomNavNeon 8s linear infinite;
-}
-
-@keyframes bottomNavNeon{
-    0%{
-        offset-distance:0%;
-        opacity:1;
-    }
-
-    11%{
-        offset-distance:100%;
-        opacity:1;
-    }
-
-    12.5%{
-        offset-distance:100%;
-        opacity:0;
-    }
-
-    100%{
-        offset-distance:100%;
-        opacity:0;
-    }
-}
-
-/* NAV ITEMS */
-
-.nav-item{
-    position:relative;
-
-    width:33.333%;
-    height:100%;
-
-    display:flex;
-    flex-direction:column;
-
-    align-items:center;
-    justify-content:center;
-
-    gap:5px;
-
-    color:#666;
-
-    font-size:10px;
-
-    cursor:pointer;
-    user-select:none;
-
-    transition:.25s ease;
-}
-
-.nav-icon{
-    font-size:18px;
-    line-height:1;
-}
-
-.nav-item.active{
-    color:#39ff14;
-
-    text-shadow:
-        0 0 8px rgba(57,255,20,.35);
-}
-
-.nav-item.active::after{
-    content:"";
-
-    position:absolute;
-
-    bottom:7px;
-
-    width:22px;
-    height:2px;
-
-    border-radius:999px;
-
-    background:#39ff14;
-
-    box-shadow:
-        0 0 7px #39ff14,
-        0 0 14px rgba(57,255,20,.6);
-
-    animation:activeLine .3s ease;
-}
-
-@keyframes activeLine{
-    from{
-        width:0;
-        opacity:0;
-    }
-
-    to{
-        width:22px;
-        opacity:1;
-    }
-}
-
-/* RIPPLE */
-
-.ripple{
-    position:absolute;
-
-    width:8px;
-    height:8px;
-
-    border-radius:50%;
-
-    background:rgba(57,255,20,.35);
-
-    transform:translate(-50%,-50%);
-
-    pointer-events:none;
-
-    animation:ripple .55s ease-out forwards;
-}
-
-@keyframes ripple{
-    from{
-        width:8px;
-        height:8px;
-        opacity:.7;
-    }
-
-    to{
-        width:100px;
-        height:100px;
-        opacity:0;
-    }
-}
-
-/* MOBILE */
-
-@media(max-width:600px){
-
-    .top-title{
-        top:20px;
-
-        font-size:12px;
-
-        padding:9px 18px;
-    }
-
-    .info-button{
-        left:calc(50% - 126px);
-    }
-
-    .bots-button{
-        left:calc(50% + 72px);
-    }
-
-    .info-button,
-    .bots-button{
-        width:54px;
-        height:32px;
-
-        top:22px;
-
-        font-size:9px;
-    }
-
-    .main-name{
-        font-size:31px;
-    }
-
-    .overlay{
-        padding-left:14px;
-        padding-right:14px;
-    }
-
-    .overlay-content{
-        width:100%;
-    }
-
-    .close-button{
-        right:0;
-    }
-
-    .bottom-nav{
-        width:calc(100% - 24px);
-        bottom:14px;
-    }
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
+html{scroll-behavior:smooth}
+body{background:#000;color:#fff;min-height:100vh;overflow:hidden}
+button,a,.nav-item{-webkit-tap-highlight-color:transparent;outline:none}
+.loader{position:fixed;inset:0;background:#000;display:flex;align-items:center;justify-content:center;z-index:99999;animation:loaderHide 1s ease 2.2s forwards}
+.loader span{color:#39ff14;font-size:30px;font-weight:900;letter-spacing:4px;text-shadow:0 0 8px #39ff14,0 0 20px rgba(57,255,20,.8);animation:pulse 1s ease-in-out infinite alternate}
+@keyframes pulse{from{opacity:.45;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+@keyframes loaderHide{to{opacity:0;visibility:hidden;pointer-events:none}}
+.snow{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:1}.snowflake{position:absolute;top:-10px;width:3px;height:3px;border-radius:50%;background:#39ff14;box-shadow:0 0 5px #39ff14,0 0 10px rgba(57,255,20,.6);opacity:.5;animation:fall linear forwards}
+@keyframes fall{0%{transform:translateY(-20px);opacity:0}10%,90%{opacity:.5}100%{transform:translateY(110vh);opacity:0}}
+.top-title{position:fixed;top:20px;left:50%;transform:translateX(-50%);z-index:100;padding:10px 22px;border:1px solid rgba(57,255,20,.3);border-radius:999px;background:rgba(5,5,5,.78);backdrop-filter:blur(12px);color:#fff;font-size:14px;font-weight:900;letter-spacing:2px;white-space:nowrap;cursor:pointer}
+.info-button,.bots-button{position:fixed;top:22px;z-index:101;width:58px;height:34px;border:1px solid rgba(57,255,20,.35);border-radius:999px;background:rgba(5,5,5,.78);color:#39ff14;font-size:10px;font-weight:900;cursor:pointer}
+.info-button{left:calc(50% - 140px)}.bots-button{left:calc(50% + 82px)}
+main{position:relative;z-index:2;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.main-content{position:absolute;top:calc(50% - 125px);left:50%;transform:translateX(-50%)}
+.main-name{color:#fff;font-size:38px;font-weight:900;letter-spacing:5px;white-space:nowrap;text-shadow:0 0 8px rgba(255,255,255,.25),0 0 18px rgba(57,255,20,.35);animation:float 3.5s ease-in-out infinite}
+.main-name span:last-child{color:#39ff14;text-shadow:0 0 7px #39ff14,0 0 18px rgba(57,255,20,.5)}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+.airdrop-home{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(360px,92vw);text-align:center}
+.balance-area{display:flex;align-items:center;justify-content:center;gap:8px;direction:ltr;margin-bottom:42px}
+.balance-box{display:flex;align-items:center;gap:7px;direction:ltr}
+.balance-label{color:#888;font-size:13px}.balance-value{color:#39ff14;font-size:32px;font-weight:900;text-shadow:0 0 8px rgba(57,255,20,.45)}
+.convert-button{display:flex;align-items:center;justify-content:center;height:30px;padding:0 10px;border:1px solid rgba(57,255,20,.35);border-radius:10px;background:rgba(57,255,20,.045);color:#39ff14;font-size:10px;font-weight:900;cursor:pointer}
+.convert-button.show{display:flex}.convert-button:hover{border-color:#39ff14;box-shadow:0 0 12px rgba(57,255,20,.2)}
+.start-button{width:180px;height:50px;border:1px solid rgba(57,255,20,.45);border-radius:15px;background:rgba(57,255,20,.05);color:#39ff14;font-size:14px;font-weight:900;cursor:pointer}
+.start-button:hover{background:rgba(57,255,20,.09);box-shadow:0 0 15px rgba(57,255,20,.2)}
+.game-overlay{position:fixed;inset:0;z-index:8000;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.9);backdrop-filter:blur(8px)}
+.game-overlay.active{display:flex}
+.game-window{position:relative;width:calc(100vw - 22px);max-width:430px;height:calc(100vh - 125px);max-height:620px;min-height:400px;border:1px solid rgba(57,255,20,.3);border-radius:22px;background:#050505;overflow:hidden;box-shadow:0 0 35px rgba(57,255,20,.08)}
+.game-back{display:block;position:absolute;top:14px;right:14px;width:38px;height:38px;border:1px solid rgba(57,255,20,.3);border-radius:50%;background:#050505;color:#39ff14;font-size:20px;cursor:pointer;z-index:10}
+.game-header{position:absolute;top:14px;left:55px;right:55px;display:flex;justify-content:center;gap:18px;direction:ltr;z-index:5}
+.game-stat{padding:7px 12px;border:1px solid rgba(57,255,20,.18);border-radius:999px;background:rgba(0,0,0,.55);font-size:11px;color:#888}.game-stat strong{color:#39ff14}
+.game-area{position:absolute;inset:0;overflow:hidden}
+.star{position:absolute;width:70px;height:70px;display:flex;align-items:center;justify-content:center;cursor:pointer;user-select:none;z-index:4;transform:translate(-50%,-60px);animation:starFall var(--duration) linear forwards}
+.star::after{content:"★";color:#39ff14;font-size:var(--size);font-weight:900;text-shadow:0 0 6px #39ff14,0 0 15px rgba(57,255,20,.8)}
+.star.collected{animation:collect .16s ease forwards}
+@keyframes starFall{0%{transform:translate(-50%,-70px);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translate(-50%,calc(100vh + 80px));opacity:0}}
+@keyframes collect{to{transform:translate(-50%,0) scale(1.8);opacity:0}}
+.toast{position:fixed;top:22px;left:50%;transform:translate(-50%,-130px);width:min(380px,calc(100% - 30px));padding:13px 18px;border:1px solid rgba(57,255,20,.35);border-radius:999px;background:rgba(5,5,5,.9);color:#fff;text-align:center;font-size:12px;z-index:999999;opacity:0;transition:.35s}.toast.show{transform:translate(-50%,0);opacity:1}
+
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);z-index:1000;display:flex;align-items:center;justify-content:center;padding:30px 20px 120px;opacity:0;visibility:hidden;pointer-events:none;transition:.3s}.overlay.active{opacity:1;visibility:visible;pointer-events:auto}
+.overlay-content{width:min(460px,100%);max-height:75vh;overflow-y:auto;position:relative;padding:28px 16px 20px}
+.overlay-title{text-align:center;color:#fff;font-size:22px;font-weight:900;margin-bottom:25px}.overlay-title span{color:#39ff14}
+.close-button{position:absolute;top:0;right:0;width:38px;height:38px;border:1px solid rgba(57,255,20,.35);border-radius:50%;background:#050505;color:#39ff14;font-size:22px;cursor:pointer}
+.bot-card,.info-card{padding:18px;margin-bottom:14px;border:1px solid rgba(57,255,20,.2);border-radius:18px;background:#080808}.bot-name,.info-card-title{color:#39ff14;font-size:14px;font-weight:900;margin-bottom:9px}.bot-desc,.info-desc{color:#aaa;font-size:13px;line-height:1.9}
+.bot-footer{display:flex;align-items:center;justify-content:space-between;direction:ltr;margin-top:13px}.bot-id{color:#777;font-size:11px;text-decoration:none}.bot-open{display:flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:14px;border:1px solid rgba(57,255,20,.3);color:#39ff14;text-decoration:none}
+.support-group{display:inline-flex;margin-top:14px;padding:9px 15px;border:1px solid rgba(57,255,20,.3);border-radius:999px;color:#39ff14;text-decoration:none;font-size:12px;font-weight:800}
+.bottom-nav{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);width:min(390px,calc(100% - 28px));height:68px;border:1px solid rgba(57,255,20,.25);border-radius:19px;background:rgba(8,8,8,.88);backdrop-filter:blur(16px);display:flex;align-items:center;justify-content:space-around;z-index:9000}
+.nav-item{position:relative;width:33.333%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;color:#666;font-size:10px;cursor:pointer}.nav-icon{font-size:18px}.nav-item.active{color:#39ff14}.nav-item.active::after{content:"";position:absolute;bottom:7px;width:22px;height:2px;border-radius:999px;background:#39ff14;box-shadow:0 0 7px #39ff14}
+
+.admin-modal,.admin-panel{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(0,0,0,.88);backdrop-filter:blur(15px);opacity:0;visibility:hidden;pointer-events:none;transition:.3s;z-index:30000}.admin-panel{z-index:29999}.admin-modal.active,.admin-panel.active{opacity:1;visibility:visible;pointer-events:auto}
+.admin-box,.admin-dashboard{width:min(430px,100%);border:1px solid rgba(57,255,20,.28);border-radius:24px;background:#070707;box-shadow:0 0 40px rgba(57,255,20,.1)}.admin-box{position:relative;padding:30px 24px 24px}.admin-close{position:absolute;top:13px;right:13px;width:34px;height:34px;border:1px solid rgba(57,255,20,.25);border-radius:50%;background:#050505;color:#39ff14;font-size:20px;cursor:pointer}.admin-icon{width:58px;height:58px;margin:0 auto 15px;display:flex;align-items:center;justify-content:center;border:1px solid rgba(57,255,20,.3);border-radius:18px;color:#39ff14;font-size:25px}.admin-title{text-align:center;font-size:20px;font-weight:900;margin-bottom:7px}.admin-subtitle{text-align:center;color:#777;font-size:11px;margin-bottom:22px}.admin-input{width:100%;height:52px;padding:0 17px;border:1px solid rgba(57,255,20,.2);border-radius:15px;background:rgba(255,255,255,.025);color:#fff;text-align:center;font-size:14px;outline:none;margin-bottom:9px}.admin-login,.add-balance-button{width:100%;height:50px;border:1px solid rgba(57,255,20,.4);border-radius:15px;background:rgba(57,255,20,.06);color:#39ff14;font-weight:900;cursor:pointer}.admin-error{text-align:center;color:#ff4b4b;font-size:11px;margin-top:10px;display:none}.admin-error.show{display:block}.admin-dashboard{max-height:82vh;overflow-y:auto;padding:24px}.admin-dashboard-title{text-align:center;color:#39ff14;font-size:20px;font-weight:900}.admin-dashboard-sub{text-align:center;color:#666;font-size:11px;margin:6px 0 20px}.admin-status,.add-balance-box,.request-card{padding:15px;border:1px solid rgba(57,255,20,.18);border-radius:16px;background:rgba(57,255,20,.025);margin-bottom:12px}.admin-status-title,.admin-section-title{color:#39ff14;font-size:12px;font-weight:900;margin-bottom:9px}.admin-status-text{color:#aaa;font-size:12px;line-height:1.8}.admin-section-title{margin-top:23px;color:#fff}.admin-user-result{text-align:center;color:#777;font-size:10px;margin-top:8px}.request-empty{padding:20px;border:1px dashed rgba(255,255,255,.1);border-radius:15px;text-align:center;color:#555;font-size:12px}.request-row{display:flex;justify-content:space-between;gap:10px;margin-bottom:8px}.request-label{color:#666;font-size:10px}.request-value{color:#fff;font-size:12px;font-weight:900}.request-value.green{color:#39ff14}.request-buttons{display:flex;gap:8px;margin-top:13px}.request-btn{flex:1;height:40px;border-radius:12px;font-size:11px;font-weight:900;cursor:pointer}.approve-btn{border:1px solid rgba(57,255,20,.4);background:rgba(57,255,20,.06);color:#39ff14}.reject-btn{border:1px solid rgba(255,70,70,.3);background:rgba(255,70,70,.035);color:#ff7070}.admin-logout{width:100%;height:46px;margin-top:10px;border:1px solid rgba(255,70,70,.25);border-radius:14px;background:rgba(255,70,70,.035);color:#ff7070;font-weight:900;cursor:pointer}
+@media(max-width:600px){.top-title{font-size:12px;padding:9px 18px}.info-button{left:calc(50% - 126px)}.bots-button{left:calc(50% + 72px)}.info-button,.bots-button{width:54px;height:32px}.main-name{font-size:31px}.game-window{width:calc(100vw - 22px);height:calc(100vh - 125px)}.bottom-nav{width:calc(100% - 24px);bottom:14px}}
 </style>
 </head>
-
 <body>
 
-<!-- LOADER -->
-
-<div class="loader">
-    <span>ABOL SNIPER</span>
-</div>
-
-<!-- SNOW -->
-
+<div class="loader"><span>ABOL SNIPER</span></div>
 <div class="snow" id="snow"></div>
+<div class="top-title" id="adminTrigger">ABOL SNIPER</div>
+<button class="info-button" id="infoBtn">INFO</button>
+<button class="bots-button" id="botsBtn">BOTS</button>
 
-<!-- TOP -->
-
-<div class="top-title">
-    ABOL SNIPER
+<main>
+<div class="main-content"><div class="main-name"><span>ABOL</span> <span>SNIPER</span></div></div>
+<div class="airdrop-home">
+<div class="balance-area">
+<div class="balance-box"><span class="balance-label">موجودی</span><span class="balance-value" id="balance">0.00</span></div>
+<button class="convert-button" id="convertButton">تبدیل</button>
 </div>
-
-<button class="info-button" id="infoBtn">
-    INFO
-</button>
-
-<button class="bots-button" id="botsBtn">
-    BOTS
-</button>
-
-<!-- MAIN -->
-
-<main id="home">
-
-    <div class="main-content">
-
-        <div class="main-name">
-            <span>ABOL</span> <span>SNIPER</span>
-        </div>
-
-    </div>
-
+<button class="start-button" id="startGame">شروع بازی</button>
+</div>
 </main>
 
-<!-- BOTS OVERLAY -->
-
-<div class="overlay" id="botsOverlay">
-
-    <div class="overlay-content">
-
-        <button class="close-button" id="closeBots">
-            ×
-        </button>
-
-        <div class="overlay-title">
-            <span>ربات</span> های ما
-        </div>
-
-        <div class="bot-card">
-
-            <div class="bot-name">
-                FREE FIRE LIKES
-            </div>
-
-            <div class="bot-desc">
-                کاملاً رایگان برای حسابت لایک بزن
-            </div>
-
-            <div class="bot-footer">
-
-                <a
-                    class="bot-id"
-                    href="https://t.me/iranfreefirebot"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    @iranfreefirebot
-                </a>
-
-                <a
-                    class="bot-open"
-                    href="https://t.me/iranfreefirebot"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    ↗
-                </a>
-
-            </div>
-
-        </div>
-
-        <div class="bot-card">
-
-            <div class="bot-name">
-                BOT MAKER
-            </div>
-
-            <div class="bot-desc">
-                کاملاً رایگان ربات بساز
-            </div>
-
-            <div class="bot-footer">
-
-                <a
-                    class="bot-id"
-                    href="https://t.me/PersiaCreatorBot"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    @PersiaCreatorBot
-                </a>
-
-                <a
-                    class="bot-open"
-                    href="https://t.me/PersiaCreatorBot"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    ↗
-                </a>
-
-            </div>
-
-        </div>
-
-        <div class="bot-card">
-
-            <div class="bot-name">
-                PREMIUM EMOJI
-            </div>
-
-            <div class="bot-desc">
-                برای کانالت پرمیوم بخر و ایموجی بزار
-            </div>
-
-            <div class="bot-footer">
-
-                <a
-                    class="bot-id"
-                    href="https://t.me/PremiumFreeEmojiBot"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    @PremiumFreeEmojiBot
-                </a>
-
-                <a
-                    class="bot-open"
-                    href="https://t.me/PremiumFreeEmojiBot"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    ↗
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
+<div class="game-overlay" id="gameOverlay">
+<div class="game-window">
+<button class="game-back" id="gameBack">×</button>
+<div class="game-header"><div class="game-stat">⏱ <strong id="timer">15</strong></div><div class="game-stat">✦ <strong id="gameBalance">0.00</strong></div></div>
+<div class="game-area" id="gameArea"></div>
+</div>
 </div>
 
-<!-- INFO OVERLAY -->
+<div class="overlay" id="botsOverlay"><div class="overlay-content">
+<button class="close-button" id="closeBots">×</button><div class="overlay-title"><span>ربات</span> های ما</div>
+<div class="bot-card"><div class="bot-name">FREE FIRE LIKES</div><div class="bot-desc">کاملاً رایگان برای حسابت لایک بزن</div><div class="bot-footer"><a class="bot-id" href="https://t.me/iranfreefirebot" target="_blank">@iranfreefirebot</a><a class="bot-open" href="https://t.me/iranfreefirebot" target="_blank">↗</a></div></div>
+<div class="bot-card"><div class="bot-name">BOT MAKER</div><div class="bot-desc">کاملاً رایگان ربات بساز</div><div class="bot-footer"><a class="bot-id" href="https://t.me/PersiaCreatorBot" target="_blank">@PersiaCreatorBot</a><a class="bot-open" href="https://t.me/PersiaCreatorBot" target="_blank">↗</a></div></div>
+<div class="bot-card"><div class="bot-name">PREMIUM EMOJI</div><div class="bot-desc">برای کانالت پرمیوم بخر و ایموجی بزار</div><div class="bot-footer"><a class="bot-id" href="https://t.me/PremiumFreeEmojiBot" target="_blank">@PremiumFreeEmojiBot</a><a class="bot-open" href="https://t.me/PremiumFreeEmojiBot" target="_blank">↗</a></div></div>
+</div></div>
 
-<div class="overlay" id="infoOverlay">
-
-    <div class="overlay-content">
-
-        <button class="close-button" id="closeInfo">
-            ×
-        </button>
-
-        <div class="overlay-title">
-            <span>درباره</span> ما
-        </div>
-
-        <div class="info-card">
-
-            <div class="info-card-title">
-                خدمات بازی و مجازی
-            </div>
-
-            <div class="info-desc">
-                ارائه خدمات بازی و مجازی با کیفیت و سرعت بالا
-            </div>
-
-        </div>
-
-        <div class="info-card">
-
-            <div class="info-card-title">
-                خدمات متنوع
-            </div>
-
-            <div class="info-desc">
-                خدمات متنوع تلگرام و برنامه‌های دیگر
-            </div>
-
-        </div>
-
-        <div class="info-card">
-
-            <div class="info-card-title">
-                کیفیت و اطمینان
-            </div>
-
-            <div class="info-desc">
-                خدمات به‌روز، مطمئن و در دسترس
-            </div>
-
-        </div>
-
-        <div class="info-card">
-
-            <div class="info-card-title">
-                گروه پشتیبانی ما
-            </div>
-
-            <div class="info-desc">
-                برای ارتباط، دریافت راهنمایی و پیگیری خدمات
-            </div>
-
-            <a
-                class="support-group"
-                href="https://t.me/ffunion"
-                target="_blank"
-                rel="noopener noreferrer"
-            >
-                ⌁ @ffunion ↗
-            </a>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- BOTTOM NAV -->
+<div class="overlay" id="infoOverlay"><div class="overlay-content">
+<button class="close-button" id="closeInfo">×</button><div class="overlay-title"><span>درباره</span> ما</div>
+<div class="info-card"><div class="info-card-title">خدمات بازی و مجازی</div><div class="info-desc">ارائه خدمات بازی و مجازی با کیفیت و سرعت بالا</div></div>
+<div class="info-card"><div class="info-card-title">خدمات متنوع</div><div class="info-desc">خدمات متنوع تلگرام و برنامه‌های دیگر</div></div>
+<div class="info-card"><div class="info-card-title">کیفیت و اطمینان</div><div class="info-desc">خدمات به‌روز، مطمئن و در دسترس</div></div>
+<div class="info-card"><div class="info-card-title">گروه پشتیبانی ما</div><div class="info-desc">برای ارتباط، دریافت راهنمایی و پیگیری خدمات</div><a class="support-group" href="https://t.me/ffunion" target="_blank">⌁ @ffunion ↗</a></div>
+</div></div>
 
 <nav class="bottom-nav">
-
-    <div class="nav-item" data-action="support">
-
-        <div class="nav-icon">
-            ◌
-        </div>
-
-        <div>
-            پشتیبانی
-        </div>
-
-    </div>
-
-    <div class="nav-item active" data-action="home">
-
-        <div class="nav-icon">
-            ⌂
-        </div>
-
-        <div>
-            خانه
-        </div>
-
-    </div>
-
-    <div class="nav-item" data-action="channel">
-
-        <div class="nav-icon">
-            ◈
-        </div>
-
-        <div>
-            کانال
-        </div>
-
-    </div>
-
+<div class="nav-item" data-action="support"><div class="nav-icon">◌</div><div>پشتیبانی</div></div>
+<div class="nav-item active" data-action="home"><div class="nav-icon">⌂</div><div>خانه</div></div>
+<div class="nav-item" data-action="channel"><div class="nav-icon">◈</div><div>کانال</div></div>
 </nav>
-<!-- JAVASCRIPT -->
+
+<div class="toast" id="toast"></div>
+
+<div class="admin-modal" id="convertModal"><div class="admin-box">
+<button class="admin-close" id="convertClose">×</button><div class="admin-icon">↻</div><div class="admin-title">تبدیل موجودی</div><div class="admin-subtitle" id="convertText"></div>
+<div class="request-buttons"><button class="request-btn approve-btn" id="convertYes">بله</button><button class="request-btn reject-btn" id="convertNo">خیر</button></div>
+</div></div>
+
+<div class="admin-modal" id="adminModal"><div class="admin-box">
+<button class="admin-close" id="adminClose">×</button><div class="admin-icon">⌬</div><div class="admin-title">پنل مدیریت</div><div class="admin-subtitle">برای ورود رمز مدیریت را وارد کنید</div>
+<input class="admin-input" id="adminPassword" type="password" placeholder="رمز مدیریت">
+<button class="admin-login" id="adminLogin">ورود به پنل</button><div class="admin-error" id="adminError">رمز وارد شده صحیح نیست</div>
+</div></div>
+
+<div class="admin-panel" id="adminPanel"><div class="admin-dashboard">
+<div class="admin-dashboard-title">ABOL SNIPER</div><div class="admin-dashboard-sub">پنل مدیریت و کنترل کاربران</div>
+<div class="admin-status"><div class="admin-status-title">وضعیت سیستم</div><div class="admin-status-text">موجودی این دستگاه: <strong id="adminBalance">0.00</strong></div><div class="admin-status-text">درخواست‌های در انتظار: <strong id="pendingCount">0</strong></div></div>
+<div class="admin-section-title">افزایش امتیاز کاربر</div>
+<div class="add-balance-box"><input class="admin-input" id="targetTelegramId" inputmode="numeric" placeholder="آیدی عددی تلگرام کاربر"><input class="admin-input" id="targetPoints" type="number" step="0.01" min="0.01" placeholder="مقدار امتیاز"><button class="add-balance-button" id="addUserPoints">+ افزایش امتیاز</button><div class="admin-user-result" id="addPointsResult"></div></div>
+<div class="admin-section-title">درخواست‌های تبدیل</div><div id="requestsList"></div>
+<button class="admin-logout" id="adminLogout">خروج از پنل</button>
+</div></div>
 
 <script>
-
-document.addEventListener("DOMContentLoaded", function(){
-
-    /* =========================
-       SNOW SYSTEM
-    ========================= */
-
-    const snowContainer =
-        document.getElementById("snow");
-
-
-    function createSnow(){
-
-        const snowflake =
-            document.createElement("span");
-
-        snowflake.className =
-            "snowflake";
-
-
-        /* Random horizontal position */
-
-        snowflake.style.left =
-            Math.random() * 100 + "%";
-
-
-        /* Slight random size */
-
-        const size =
-            2 + Math.random() * 2;
-
-        snowflake.style.width =
-            size + "px";
-
-        snowflake.style.height =
-            size + "px";
-
-
-        /* Slight random opacity */
-
-        snowflake.style.opacity =
-            0.35 + Math.random() * 0.25;
-
-
-        /* Slight random fall speed */
-
-        snowflake.style.animationDuration =
-            (7 + Math.random() * 3) + "s";
-
-
-        snowContainer.appendChild(
-            snowflake
-        );
-
-
-        /* Remove after animation */
-
-        setTimeout(function(){
-
-            snowflake.remove();
-
-        }, 11000);
-
-    }
-
-
-    /* First snow */
-
-    setTimeout(function(){
-
-        createSnow();
-
-    }, 800);
-
-
-    /* One snow every 3.5 seconds */
-
-    setInterval(function(){
-
-        createSnow();
-
-    }, 3500);
-
-
-    /* =========================
-       ELEMENTS
-    ========================= */
-
-    const infoBtn =
-        document.getElementById("infoBtn");
-
-    const botsBtn =
-        document.getElementById("botsBtn");
-
-    const infoOverlay =
-        document.getElementById("infoOverlay");
-
-    const botsOverlay =
-        document.getElementById("botsOverlay");
-
-    const closeInfo =
-        document.getElementById("closeInfo");
-
-    const closeBots =
-        document.getElementById("closeBots");
-
-
-    /* =========================
-       OPEN INFO
-    ========================= */
-
-    infoBtn.addEventListener("click", function(){
-
-        infoOverlay.classList.add("active");
-
-    });
-
-
-    /* =========================
-       OPEN BOTS
-    ========================= */
-
-    botsBtn.addEventListener("click", function(){
-
-        botsOverlay.classList.add("active");
-
-    });
-
-
-    /* =========================
-       CLOSE INFO
-    ========================= */
-
-    closeInfo.addEventListener("click", function(){
-
-        infoOverlay.classList.remove("active");
-
-    });
-
-
-    /* =========================
-       CLOSE BOTS
-    ========================= */
-
-    closeBots.addEventListener("click", function(){
-
-        botsOverlay.classList.remove("active");
-
-    });
-
-
-    /* =========================
-       CLOSE WITH BACKGROUND
-    ========================= */
-
-    infoOverlay.addEventListener("click", function(e){
-
-        if(e.target === infoOverlay){
-
-            infoOverlay.classList.remove("active");
-
-        }
-
-    });
-
-
-    botsOverlay.addEventListener("click", function(e){
-
-        if(e.target === botsOverlay){
-
-            botsOverlay.classList.remove("active");
-
-        }
-
-    });
-
-
-    /* =========================
-       ESCAPE
-    ========================= */
-
-    document.addEventListener("keydown", function(e){
-
-        if(e.key === "Escape"){
-
-            infoOverlay.classList.remove("active");
-
-            botsOverlay.classList.remove("active");
-
-        }
-
-    });
-
-
-    /* =========================
-       BOTTOM NAV
-    ========================= */
-
-    const navItems =
-        document.querySelectorAll(".nav-item");
-
-
-    navItems.forEach(function(item){
-
-        item.addEventListener("click", function(e){
-
-            navItems.forEach(function(nav){
-
-                nav.classList.remove("active");
-
-            });
-
-
-            this.classList.add("active");
-
-
-            /* RIPPLE */
-
-            const ripple =
-                document.createElement("span");
-
-            ripple.className =
-                "ripple";
-
-
-            const rect =
-                this.getBoundingClientRect();
-
-
-            ripple.style.left =
-                (e.clientX - rect.left) + "px";
-
-
-            ripple.style.top =
-                (e.clientY - rect.top) + "px";
-
-
-            this.appendChild(ripple);
-
-
-            setTimeout(function(){
-
-                ripple.remove();
-
-            }, 600);
-
-
-            /* ACTIONS */
-
-            const action =
-                this.dataset.action;
-
-
-            if(action === "home"){
-
-                window.scrollTo({
-
-                    top:0,
-
-                    behavior:"smooth"
-
-                });
-
-            }
-
-
-            if(action === "support"){
-
-                window.open(
-                    "https://t.me/abolplus",
-                    "_blank"
-                );
-
-                setTimeout(function(){
-
-                    navItems.forEach(function(nav){
-
-                        nav.classList.remove("active");
-
-                    });
-
-                    document
-                        .querySelector('[data-action="home"]')
-                        .classList.add("active");
-
-                }, 500);
-
-            }
-
-
-            if(action === "channel"){
-
-                window.open(
-                    "https://t.me/abolsniper",
-                    "_blank"
-                );
-
-                setTimeout(function(){
-
-                    navItems.forEach(function(nav){
-
-                        nav.classList.remove("active");
-
-                    });
-
-                    document
-                        .querySelector('[data-action="home"]')
-                        .classList.add("active");
-
-                }, 500);
-
-            }
-
-        });
-
-    });
-
+document.addEventListener("DOMContentLoaded",function(){
+const tg=window.Telegram&&window.Telegram.WebApp?window.Telegram.WebApp:null;
+if(tg){tg.ready();try{tg.expand()}catch(e){}}
+const tgUser=tg&&tg.initDataUnsafe&&tg.initDataUnsafe.user?tg.initDataUnsafe.user:null;
+const telegramUserId=tgUser&&tgUser.id?String(tgUser.id):"guest";
+const $=id=>document.getElementById(id);
+const balanceKey="abolBalance_"+telegramUserId;
+let userBalance=Number(localStorage.getItem(balanceKey))||0;
+let requests=JSON.parse(localStorage.getItem("abolConversionRequests")||"[]");
+let lastGame=Number(localStorage.getItem("abolLastGame_"+telegramUserId)||0);
+let gameRunning=false,timerInt=null,spawnInt=null,timeLeft=15,spawned=0;
+
+function toast(m){$("toast").textContent=m;$("toast").classList.add("show");clearTimeout(window.tt);window.tt=setTimeout(()=>$("toast").classList.remove("show"),2300)}
+function saveBalance(){localStorage.setItem(balanceKey,userBalance.toFixed(2));$("balance").textContent=userBalance.toFixed(2);$("gameBalance").textContent=userBalance.toFixed(2);$("adminBalance").textContent=userBalance.toFixed(2);updateConvert()}
+function updateConvert(){
+ const whole=Math.floor(userBalance);
+ const valid=whole>=2&&whole%2===0;
+ $("convertButton").classList.toggle("show",valid);
+}
+function createSnow(){for(let i=0;i<12;i++){let s=document.createElement("span");s.className="snowflake";s.style.left=Math.random()*100+"%";s.style.animationDuration=7+Math.random()*8+"s";s.style.animationDelay=Math.random()*8+"s";$("snow").appendChild(s)}}
+createSnow();saveBalance();
+
+function twoHourCheck(){
+ const elapsed=Date.now()-lastGame;
+ if(lastGame&&elapsed<7200000){
+   const remain=7200000-elapsed;
+   const h=Math.floor(remain/3600000),m=Math.ceil((remain%3600000)/60000);
+   toast("محدودیت بازی فعال است؛ "+(h?`${h} ساعت و `:"")+m+" دقیقه دیگر");
+   return false;
+ }
+ return true;
+}
+
+function spawnStar(){
+ if(!gameRunning||spawned>=50)return;
+ const star=document.createElement("div");
+ star.className="star";
+ star.style.left=(5+Math.random()*90)+"%";
+ star.style.top="-35px";
+ star.style.setProperty("--duration",(1.8+Math.random()*3.8)+"s");
+ star.style.setProperty("--size",(14+Math.random()*13)+"px");
+ star.addEventListener("click",function(e){
+   if(!gameRunning)return;
+   e.stopPropagation();
+   star.classList.add("collected");
+   userBalance+=.01;saveBalance();
+   setTimeout(()=>star.remove(),180);
+ });
+ $("gameArea").appendChild(star);spawned++;
+ star.addEventListener("animationend",function(){if(star.parentNode)star.remove()});
+}
+function stopGame(){
+ gameRunning=false;clearInterval(timerInt);clearInterval(spawnInt);
+ $("gameArea").innerHTML="";$("gameOverlay").classList.remove("active");
+ if(lastGame===0||Date.now()-lastGame>=7200000){lastGame=Date.now();localStorage.setItem("abolLastGame_"+telegramUserId,lastGame)}
+}
+function startGame(){
+ if(gameRunning)return;
+ if(!twoHourCheck())return;
+ gameRunning=true;spawned=0;timeLeft=15;$("timer").textContent=15;$("gameOverlay").classList.add("active");
+ const firstBatch=Math.min(5,50);
+ for(let i=0;i<firstBatch;i++)setTimeout(spawnStar,i*180);
+ spawned=firstBatch;
+ spawnInt=setInterval(()=>{if(spawned<50)spawnStar()},350+Math.random()*500);
+ timerInt=setInterval(()=>{timeLeft--;$("timer").textContent=timeLeft;if(timeLeft<=0)stopGame()},1000);
+}
+$("startGame").onclick=startGame;$("gameBack").onclick=stopGame;
+
+$("convertButton").onclick=function(){
+ const amount=Math.floor(userBalance/2)*2;
+ if(amount<2)return;
+ $("convertText").textContent="تبدیل "+amount.toFixed(0)+" امتیاز به "+(amount/2).toFixed(0)+" توکن انجام شود؟";
+ $("convertModal").classList.add("active");
+};
+$("convertClose").onclick=$("convertNo").onclick=()=>$("convertModal").classList.remove("active");
+$("convertYes").onclick=function(){
+ const amount=Math.floor(userBalance/2)*2;
+ if(amount<2)return;
+ userBalance-=amount;saveBalance();
+ requests.push({id:Date.now(),telegramId:telegramUserId,points:amount,tokens:amount/2,status:"pending",createdAt:new Date().toLocaleString("fa-IR")});
+ localStorage.setItem("abolConversionRequests",JSON.stringify(requests));
+ $("convertModal").classList.remove("active");toast("درخواست تبدیل ثبت شد.");
+ renderRequests();
+};
+
+$("infoBtn").onclick=()=>$("infoOverlay").classList.add("active");
+$("botsBtn").onclick=()=>$("botsOverlay").classList.add("active");
+$("closeInfo").onclick=()=>$("infoOverlay").classList.remove("active");
+$("closeBots").onclick=()=>$("botsOverlay").classList.remove("active");
+["infoOverlay","botsOverlay"].forEach(id=>$(id).onclick=e=>{if(e.target===$(id))$(id).classList.remove("active")});
+
+document.querySelectorAll(".nav-item").forEach(item=>{
+ item.onclick=function(){
+  const a=this.dataset.action;
+  document.querySelectorAll(".nav-item").forEach(x=>x.classList.remove("active"));
+  if(a==="home"){document.querySelector('[data-action="home"]').classList.add("active");window.scrollTo(0,0);return}
+  if(a==="support"){window.open("https://t.me/abolplus","_blank")}
+  if(a==="channel"){window.open("https://t.me/abolsniper","_blank")}
+  setTimeout(()=>document.querySelector('[data-action="home"]').classList.add("active"),300);
+ };
 });
 
-</script>
+let clicks=0,clickTimer;
+$("adminTrigger").onclick=function(){clicks++;clearTimeout(clickTimer);clickTimer=setTimeout(()=>clicks=0,500);if(clicks>=2){clicks=0;$("adminModal").classList.add("active");$("adminPassword").focus()}};
+$("adminClose").onclick=()=>$("adminModal").classList.remove("active");
+$("adminLogin").onclick=function(){if($("adminPassword").value==="abol88"){$("adminModal").classList.remove("active");$("adminPanel").classList.add("active");renderRequests()}else $("adminError").classList.add("show")};
+$("adminLogout").onclick=()=>$("adminPanel").classList.remove("active");
 
+function renderRequests(){
+ const pending=requests.filter(x=>x.status==="pending");$("pendingCount").textContent=pending.length;
+ if(!pending.length){$("requestsList").innerHTML='<div class="request-empty">درخواستی در انتظار بررسی نیست.</div>';return}
+ $("requestsList").innerHTML="";
+ pending.forEach(r=>{
+  const d=document.createElement("div");d.className="request-card";
+  d.innerHTML=`<div class="request-row"><span class="request-label">آیدی</span><span class="request-value green">${r.telegramId}</span></div><div class="request-row"><span class="request-label">امتیاز</span><span class="request-value green">${r.points}</span></div><div class="request-row"><span class="request-label">توکن</span><span class="request-value green">${r.tokens}</span></div><div class="request-buttons"><button class="request-btn approve-btn" data-a="ok" data-id="${r.id}">✓ تایید</button><button class="request-btn reject-btn" data-a="no" data-id="${r.id}">× رد</button></div>`;
+  $("requestsList").appendChild(d);
+ });
+}
+$("requestsList").onclick=function(e){
+ const b=e.target.closest("[data-a]");if(!b)return;
+ const i=requests.findIndex(x=>x.id==b.dataset.id);if(i<0)return;
+ if(b.dataset.a==="ok"){requests.splice(i,1);toast("درخواست تایید شد.")}else{requests.splice(i,1);toast("درخواست رد شد.")}
+ localStorage.setItem("abolConversionRequests",JSON.stringify(requests));renderRequests();
+};
+$("addUserPoints").onclick=function(){
+ const id=$("targetTelegramId").value.trim(),n=Number($("targetPoints").value);
+ if(!/^\d+$/.test(id)||n<=0){$("addPointsResult").textContent="اطلاعات واردشده صحیح نیست.";return}
+ const key="abolBalance_"+id;const old=Number(localStorage.getItem(key))||0;localStorage.setItem(key,(old+n).toFixed(2));
+ if(id===telegramUserId){userBalance+=n;saveBalance()}
+ $("addPointsResult").textContent=n.toFixed(2)+" امتیاز اضافه شد.";
+};
+
+document.addEventListener("keydown",e=>{
+ if(e.key==="Escape")["convertModal","adminModal","adminPanel","infoOverlay","botsOverlay"].forEach(id=>$(id).classList.remove("active"));
+});
+});
+</script>
 </body>
 </html>
